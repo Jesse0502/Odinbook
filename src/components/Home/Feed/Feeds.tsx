@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Post from './Post';
 import { Box, Flex, Text } from '@chakra-ui/layout';
 import PostTweet from './PostTweet';
 import { Avatar } from '@chakra-ui/avatar';
 import Navbar from '../../Navbar/Navbar';
+import useFetch from '../../customHooks/useFetch';
 function Feeds() {
+  const [url, setUrl] = useState<string>();
+  useEffect(() => {
+    setUrl('/tweet');
+  }, []);
+
+  const { fetchData } = useFetch(url, 'GET', '');
   return (
     <Box
       color='brand.text'
@@ -34,10 +41,9 @@ function Feeds() {
       </Box>
       <Box pt='16'>
         <PostTweet />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {fetchData
+          ? fetchData.tweets.map((tweet) => <Post tweet={tweet} />)
+          : 'loading'}
       </Box>
     </Box>
   );

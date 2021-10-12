@@ -19,10 +19,24 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import NavOpenTweet from './NavOpenTweet';
+import useAuth from '../customHooks/useAuth';
+import useUserInfo from '../customHooks/useUserInfo';
+import { useEffect, useState } from 'react';
 function Navbar({ home, profile }) {
+  const [loggedAuthInfo, setLoggedAuthInfo] = useState<any>();
   const handleTweetModal = () => {};
+  const { authInfo } = useAuth();
+  useEffect(() => {
+    if (authInfo) {
+      setLoggedAuthInfo(authInfo.username);
+    }
+  }, [authInfo]);
+  const { userInfo } = useUserInfo(loggedAuthInfo);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  };
   const navItems = [
     {
       icon: home ? <AiFillHome size={32} /> : <AiOutlineHome size={32} />,
@@ -32,7 +46,7 @@ function Navbar({ home, profile }) {
     {
       icon: home ? <FiUser size={32} /> : <FaUserAlt size={32} />,
       text: 'Profile',
-      to: '/artboy',
+      to: `/${authInfo ? authInfo.username : ''}`,
     },
   ];
   return (
@@ -109,18 +123,18 @@ function Navbar({ home, profile }) {
           <NavOpenTweet />
         </Box>
         <Flex pos='absolute' bottom='40px' alignItems={'center'}>
-          <Avatar mr='4'></Avatar>
+          <Avatar mr='4' src={userInfo ? userInfo.profilePic : ''}></Avatar>
           <Flex flexDir={'column'}>
             <Text fontSize={20} fontWeight={'bold'}>
-              Profile
+              {userInfo ? userInfo.name : ''}
             </Text>
-            <Text fontSize={12} fontWeight={'normal'}>
-              @Profile
+            <Text fontSize={12} fontWeight={'normal'} color='whiteAlpha.500'>
+              @{authInfo ? authInfo.username : ''}
             </Text>
           </Flex>
           <Box
             as={Link}
-            ml='70%'
+            ml='50%'
             zIndex={0}
             _hover={{ bg: 'none' }}
             px='2'
@@ -136,8 +150,10 @@ function Navbar({ home, profile }) {
                 <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
                   Open Closed Tab
                 </MenuItem>
-                <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                  Open File
+                <MenuItem
+                  onClick={handleLogout}
+                  _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
+                  Logout
                 </MenuItem>
               </MenuList>
             </Menu>

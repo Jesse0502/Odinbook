@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Flex, Text } from '@chakra-ui/layout';
 import { Image, Input, Textarea } from '@chakra-ui/react';
@@ -7,7 +7,14 @@ import { Button } from '@chakra-ui/react';
 import { BiImageAdd } from 'react-icons/bi';
 import { Upload, message } from 'antd';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import useFetch from '../../customHooks/useFetch';
+import useAuth from '../../customHooks/useAuth';
+import useUserInfo from '../../customHooks/useUserInfo';
 function PostTweet() {
+  const [userUrl, setUserUrl] = useState<null | string>(null);
+  const { authInfo } = useAuth();
+
+  const { userInfo } = useUserInfo(authInfo && authInfo.username);
   const handleTweetLength = (e) => {
     setTweetLength((e.target.value.length / 280) * 100);
   };
@@ -17,21 +24,7 @@ function PostTweet() {
   };
   const [loading, setLoading] = useState<any>(false);
   const [tweetLength, setTweetLength] = useState<number>(0);
-  function beforeUpload(file) {
-    const isJpgOrPng =
-      file.type === 'image/JPG' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/jpg' ||
-      file.type === 'image/png';
-    if (!isJpgOrPng) {
-      setLoading({ error: 'You can only upload JPG/PNG file!' });
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        setLoading({ error: 'Image must smaller than 2MB!' });
-      }
-    }
-    handleChange(file);
-  }
+
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -43,7 +36,6 @@ function PostTweet() {
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, (imageUrl) =>
         setLoading({
           imageUrl,
@@ -55,14 +47,28 @@ function PostTweet() {
   const handleRemoveImage = () => {
     setLoading({ imageUrl: '' });
   };
+  const [url, setUrl] = useState<string | null>(null);
+  const [postBody, setPostBody] = useState<any>();
+
   const handleTweetPost = (e) => {
+    e.target[0].innerHTML = e.target[0].value;
     e.preventDefault();
     const tweetBody = {
       tweetImage: loading.imageUrl ?? '',
-      tweet: e.target[0].value.trim(),
+      tweet: e.target[0].innerHTML,
+      username: userInfo && userInfo.username,
+      name: userInfo && userInfo.name,
     };
+    setUrl('/tweet');
+    setPostBody(tweetBody);
     console.log(tweetBody);
   };
+  const { fetchData } = useFetch(url, 'POST', postBody);
+  useEffect(() => {
+    if (fetchData && fetchData.sucess) {
+      window.location.reload();
+    }
+  }, [fetchData]);
   return (
     <Box
       py={{ lg: '3', base: '7' }}
@@ -73,8 +79,8 @@ function PostTweet() {
       borderBottom={'1px'}
       borderColor={'whiteAlpha.200'}>
       <form onSubmit={(e) => handleTweetPost(e)}>
-        <Flex w='full' h='max' overflowWrap={'anywhere'}>
-          <Avatar></Avatar>
+        <Flex w='max' h='max' overflowWrap={'break-word'}>
+          <Avatar src={userInfo && userInfo.profilePic}></Avatar>
           <Flex
             pl='5'
             flexDir={'column'}
@@ -83,10 +89,10 @@ function PostTweet() {
             overflowWrap={'anywhere'}>
             <Flex>
               <Text pr='1' fontWeight={'semibold'}>
-                Artboy
+                {userInfo && userInfo.name}
               </Text>
               <Text pl='1' color='whiteAlpha.600' fontWeight={'light'}>
-                @user
+                @{userInfo && userInfo.username}
               </Text>{' '}
             </Flex>
             <Textarea
@@ -121,7 +127,7 @@ function PostTweet() {
                   my='2'
                   rounded='2xl'
                   maxH='300px'
-                  w='600px'
+                  w='full'
                   objectFit={'cover'}></Image>
               </Box>
             ) : (
@@ -154,8 +160,7 @@ function PostTweet() {
               listType='picture-card'
               showUploadList={false}
               action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-              // onChange={handleChange}
-              onChange={beforeUpload}>
+              onChange={handleChange}>
               <BiImageAdd size={28} color='#1A94DA' />
             </Upload>
           </Box>

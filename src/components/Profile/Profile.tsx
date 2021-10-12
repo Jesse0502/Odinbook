@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@chakra-ui/layout';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
 import User from './User';
+import useAuth from '../customHooks/useAuth';
+import useFetch from '../customHooks/useFetch';
+import useUserInfo from '../customHooks/useUserInfo';
 
-function Profile() {
+function Profile(props) {
+  const [url, setUrl] = useState<string | null>();
+  const [loggedInUserInfo, setLoggedInUserInfo] = useState<null | any>(null);
+  const { authInfo } = useAuth();
+  useEffect(() => {
+    if (authInfo) {
+      setUrl('/profile/' + authInfo.username);
+      console.log('running url');
+    }
+  });
+
+  const { fetchData, fetchError, fetchIsPending } = useFetch(url, 'GET', '');
+  useEffect(() => {
+    if (fetchData) {
+      setLoggedInUserInfo(fetchData.user[0]);
+      console.log(fetchData.user[0]);
+    }
+  }, [fetchData]);
+  const profileInfo = props.match.params.user;
+  const { userInfo } = useUserInfo(profileInfo);
   return (
     <>
       <Grid
@@ -17,7 +39,15 @@ function Profile() {
           <Navbar home={false} profile={true} />
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
-          <User />
+          <User
+            profileInfo={userInfo}
+            loggedIn={loggedInUserInfo}
+            sameUser={
+              userInfo &&
+              loggedInUserInfo &&
+              userInfo.username === loggedInUserInfo.username
+            }
+          />
         </Box>
         <Box w='full' display={{ md: 'block', base: 'none' }}>
           <WhoToFollow />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@chakra-ui/button';
 import { useDisclosure } from '@chakra-ui/hooks';
 import {
@@ -22,10 +22,15 @@ import {
 import { FaTwitter } from 'react-icons/fa';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { FormControl, FormLabel, Tooltip } from '@chakra-ui/react';
+import { CircularProgress } from '@chakra-ui/react';
+import useFetch from '../customHooks/useFetch';
 function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showPass, setShowPass] = useState<Boolean>(false);
   const [formResult, setFormResult] = useState();
+  const [url, setUrl] = useState<string>();
+  const [postBody, setPostBody] = useState<any>();
+  const [spinner, setSpinner] = useState<boolean>(false);
   const handleShowPass = () => {
     if (showPass) {
       setShowPass(false);
@@ -36,11 +41,28 @@ function LoginModal() {
 
   const handleFormSubmit = (e: any) => {
     const body = {
-      name: e.target[1].value,
-      username: e.target[2].value,
+      email: e.target[1].value,
+      password: e.target[2].value,
     };
+    setSpinner(true);
+    setUrl('/login');
+    setPostBody(body);
     console.log(body);
   };
+  const { fetchData, fetchError, fetchIsPending } = useFetch(
+    url,
+    'POST',
+    postBody
+  );
+
+  useEffect(() => {
+    if (fetchData) {
+      setSpinner(false);
+      console.log(`user ${fetchData.user}`);
+      localStorage.setItem('token', fetchData.user);
+      window.location.href = '/';
+    }
+  }, [fetchData]);
   return (
     <>
       <Box
@@ -113,6 +135,10 @@ function LoginModal() {
                     />
                   </InputGroup>
                 </FormControl>
+                <Text color='green.400'>
+                  {fetchData ? fetchData.success : ''}
+                </Text>
+                <Text color='red.400'>{fetchData ? fetchData.error : ''}</Text>
               </Box>
             </ModalBody>
 
@@ -132,8 +158,19 @@ function LoginModal() {
                 borderColor={'brand.main'}
                 colorScheme='twitter'
                 color='brand.text'
+                isDisabled={spinner}
                 _hover={{ bg: 'brand.main' }}>
-                Create Account
+                {!spinner ? (
+                  'Login'
+                ) : (
+                  <CircularProgress
+                    isIndeterminate
+                    thickness={12}
+                    size='30px'
+                    px='3'
+                    color='brand.main'
+                  />
+                )}
               </Button>
             </ModalFooter>
           </form>

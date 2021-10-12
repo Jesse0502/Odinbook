@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Avatar, Button, Image, Textarea } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Avatar, Button, Image, Skeleton, Textarea } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import {
   Modal,
@@ -24,10 +24,30 @@ import { FormControl, FormLabel } from '@chakra-ui/react';
 import { Upload, message } from 'antd';
 import profileBanner from '../../assets/profileBanner.png';
 import { BiCamera } from 'react-icons/bi';
+import useAuth from '../customHooks/useAuth';
+import useFetch from '../customHooks/useFetch';
 function EditProfileModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<any>(false);
   const [loading2, setLoading2] = useState<any>(false);
+  const [url, setUrl] = useState<string | null>();
+  const [postBody, setPostBody] = useState<any>();
+  const [loggedInUserInfo, setLoggedInUserInfo] = useState<null | any>(null);
+  const [editIsPending, setEditIsPending] = useState<boolean>(false);
+  useEffect(() => {
+    if (authInfo) {
+      fetch(`http://localhost:3001/profile/${authInfo.username}`)
+        .then((res) => {
+          return res.json();
+        })
+        .then((result) => {
+          setLoggedInUserInfo(result.user[0]);
+        })
+        .catch((err) => {});
+      console.log('running url');
+    }
+  }, [isOpen]);
+
   function beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -85,17 +105,40 @@ function EditProfileModal() {
       );
     }
   };
+  const { authInfo } = useAuth();
   const handleEditSubmit = (e: any) => {
     e.preventDefault();
+    setEditIsPending(true);
     const body = {
-      profileBanner: loading.imageUrl,
-      profileAvatar: loading2.imageUrl,
+      profileBanner: loading2.imageUrl
+        ? loading2.imageUrl
+        : loggedInUserInfo.profileBanner
+        ? loggedInUserInfo.profileBanner
+        : '',
+      profilePic: loading.imageUrl
+        ? loading.imageUrl
+        : loggedInUserInfo.profilePic
+        ? loggedInUserInfo.profilePic
+        : '',
       name: e.target[2].value,
       bio: e.target[3].value,
       location: e.target[4].value,
     };
+    setUrl('/profile/' + authInfo.username + '?_method=PUT');
+    setPostBody(body);
     console.log(body);
   };
+  const { fetchData, fetchError, fetchIsPending } = useFetch(
+    url,
+    'POST',
+    postBody
+  );
+  useEffect(() => {
+    if (fetchData) {
+      setEditIsPending(false);
+      window.location.reload();
+    }
+  });
   return (
     <Box>
       <Box
@@ -137,7 +180,8 @@ function EditProfileModal() {
                   name='profileBanner'
                   listType='picture-card'
                   showUploadList={false}
-                  action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                  action='http://www.mocky.io/v2/5cc8019d300000980a055e76'
+                  method='POST'
                   beforeUpload={beforeUpload2}
                   onChange={handleChange2}>
                   {loading2.imageUrl ? (
@@ -170,7 +214,11 @@ function EditProfileModal() {
                         maxH='200px'
                         w='full'
                         objectFit={'cover'}
-                        src={profileBanner}></Image>
+                        src={
+                          loggedInUserInfo && loggedInUserInfo.profileBanner
+                            ? loggedInUserInfo.profileBanner
+                            : ''
+                        }></Image>
                     </Center>
                   )}
                 </Upload>
@@ -219,7 +267,11 @@ function EditProfileModal() {
                             size={'xl'}
                             opacity='0.5'
                             objectFit={'cover'}
-                            src={profileBanner}></Avatar>
+                            src={
+                              loggedInUserInfo && loggedInUserInfo.profilePic
+                                ? loggedInUserInfo.profilePic
+                                : ''
+                            }></Avatar>
                         </Center>
                       )}
                     </Upload>
@@ -229,19 +281,27 @@ function EditProfileModal() {
               <FormControl pt='16'>
                 <Input
                   placeholder='Name'
-                  defaultValue={'name'}
+                  defaultValue={loggedInUserInfo ? loggedInUserInfo.name : ''}
                   borderColor={'whiteAlpha.600'}></Input>
               </FormControl>
               <FormControl pt='5'>
                 <Textarea
                   placeholder='Bio'
-                  // defaultValue={'name'}
+                  defaultValue={
+                    loggedInUserInfo && loggedInUserInfo.bio
+                      ? loggedInUserInfo.bio
+                      : ''
+                  }
                   borderColor={'whiteAlpha.600'}></Textarea>
               </FormControl>
               <FormControl pt='5'>
                 <Input
                   placeholder='Location'
-                  // defaultValue={'name'}
+                  defaultValue={
+                    loggedInUserInfo && loggedInUserInfo.location
+                      ? loggedInUserInfo.location
+                      : ''
+                  }
                   borderColor={'whiteAlpha.600'}></Input>
               </FormControl>
             </ModalBody>
@@ -250,8 +310,11 @@ function EditProfileModal() {
               <Link as={Link} mr={3} onClick={onClose}>
                 Close
               </Link>
-              <Button type='submit' colorScheme='twitter'>
-                Submit
+              <Button
+                isDisabled={editIsPending}
+                type='submit'
+                colorScheme='twitter'>
+                {!editIsPending ? 'Update' : 'Updating...'}
               </Button>
             </ModalFooter>
           </form>

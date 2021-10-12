@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Flex, Link, Text } from '@chakra-ui/layout';
 import { Menu, MenuButton, MenuList, MenuItem, Image } from '@chakra-ui/react';
@@ -6,10 +6,25 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { BsDot } from 'react-icons/bs';
 import { FaRegComment } from 'react-icons/fa';
 import { AiOutlineHeart } from 'react-icons/ai';
-function Post() {
+import useUserInfo from '../../customHooks/useUserInfo';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import useAuth from '../../customHooks/useAuth';
+import useFetch from '../../customHooks/useFetch';
+
+function Post({ tweet }) {
   const redirectToSingleTweetPage = () => {
-    window.location.href = '/tweet/1';
+    window.location.href = '/tweet/' + tweet._id;
   };
+  const { authInfo } = useAuth();
+  const { userInfo } = useUserInfo(tweet.username);
+  const [url, setUrl] = useState<string | null>(null);
+  const [postBody, setPostBody] = useState<string | null>(null);
+  const handleTweetDelete = (e) => {
+    setUrl(`/tweet/delete/${e}`);
+
+    // alert(e);
+  };
+  const { fetchData } = useFetch(url, 'POST', '');
   return (
     <Box
       py='3'
@@ -19,32 +34,33 @@ function Post() {
       borderBottom={'1px'}
       borderColor={'whiteAlpha.200'}>
       <Flex>
-        <Avatar></Avatar>
+        <Avatar src={userInfo && userInfo.profilePic}></Avatar>
         <Flex pl='5' flexDir={'column'}>
           <Flex>
             <Text pr='1' fontWeight={'semibold'}>
-              Artboy
+              {userInfo && userInfo.name}
             </Text>
             <Text pl='1' color='whiteAlpha.600' fontWeight={'light'}>
-              @user
+              @{tweet.username}
             </Text>{' '}
             <BsDot size={26} color='#606363' />
             <Text color='whiteAlpha.600' fontWeight={'light'}>
-              50s
+              {formatDistanceToNow(new Date(tweet.createdAt), {
+                addSuffix: true,
+              })}
             </Text>{' '}
           </Flex>
-          <Text pr='5' onClick={redirectToSingleTweetPage}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptas
-            exercitationem optio odio modi expedita velit culpa ipsa libero
-            voluptatibus excepturi illo dolore officiis, itaque obcaecati atque
-            distinctio sit consequatur minus doloribus nesciunt! Iusto,
-            doloribus temporibus ab commodi at totam quisquam quos possimus quis
-            fugit? Repellendus enim optio, veniam aut harum saepe atque?
-          </Text>
+          <Text
+            pr='5'
+            onClick={redirectToSingleTweetPage}
+            id='tweet'
+            dangerouslySetInnerHTML={{
+              __html: `\n ${tweet.tweet}`,
+            }}></Text>
           <Image
             mt='2'
             rounded='2xl'
-            src={''}
+            src={tweet.tweetImage}
             maxH='300px'
             w='600px'
             objectFit={'cover'}></Image>
@@ -55,9 +71,13 @@ function Post() {
               <BiDotsHorizontalRounded size={24} />
             </MenuButton>
             <MenuList bg='brand.bg'>
-              <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                New Window
-              </MenuItem>
+              {authInfo && userInfo && authInfo.username === userInfo.username && (
+                <MenuItem
+                  onClick={() => handleTweetDelete(tweet._id)}
+                  _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
+                  Delete
+                </MenuItem>
+              )}
               <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
                 Open Closed Tab
               </MenuItem>
@@ -71,11 +91,11 @@ function Post() {
       <Flex py='2' pl='16'>
         <Flex alignItems={'center'} pr='12'>
           <FaRegComment size={18} />
-          <Text pl='3'>23</Text>
+          <Text pl='3'>{tweet.comments.length}</Text>
         </Flex>
         <Flex alignItems={'center'} pr='12'>
           <AiOutlineHeart size={20} />
-          <Text pl='3'>54</Text>
+          <Text pl='3'>{tweet.likes.length}</Text>
         </Flex>
       </Flex>
     </Box>

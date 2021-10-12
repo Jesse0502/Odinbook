@@ -8,12 +8,16 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Home from './components/Home/Home';
 import CantEnterPage from './components/AccessDenied/CantEnterPage';
 import Profile from './components/Profile/Profile';
 import SingleTweet from './components/Profile/SingleTweet/SingleTweet';
+import useAuth from './components/customHooks/useAuth';
+import { TweetPostContext } from './components/Context/TweetPostContext';
 function App() {
+  const { authInfo } = useAuth();
+  const [tweetPost, setTweetPost] = useState(true);
   const theme = extendTheme({
     colors: {
       brand: {
@@ -31,7 +35,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <Router>
         <div className='App'>
-          {false ? (
+          {!authInfo ? (
             <Switch>
               <Route path='/' exact component={Signup}></Route>
               <Route path='*' exact component={CantEnterPage}></Route>
