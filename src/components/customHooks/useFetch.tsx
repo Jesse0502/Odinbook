@@ -19,9 +19,9 @@ function useFetch(url, type, postBody) {
           .then((result) => {
             setFetchData(result);
             setFetchErr(null);
-            // setTimeout(() => {
-            //   setCounter(counter + 1);
-            // }, 1000);
+            setTimeout(() => {
+              setCounter(counter + 1);
+            }, 1000);
           })
           .catch((err) => {
             setFetchErr(err.message);

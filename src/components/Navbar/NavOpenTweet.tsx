@@ -35,7 +35,7 @@ function NavOpenTweet() {
           <ModalHeader>Create Tweet</ModalHeader>
           <ModalCloseButton />
           <ModalBody bg='brand.bg' color='brand.text' w='full' px='1' py='0'>
-            <PostTweet />
+            <PostTweet onClose={onClose} />
           </ModalBody>
 
           <ModalFooter py='6'>

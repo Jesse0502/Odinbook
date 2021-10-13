@@ -9,7 +9,6 @@ function useAuth() {
       let user = jwt.decode(token);
       if (user) {
         setAuthInfo(user);
-        console.log(user);
       }
     }
   }, []);

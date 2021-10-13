@@ -22,10 +22,12 @@ import NavOpenTweet from './NavOpenTweet';
 import useAuth from '../customHooks/useAuth';
 import useUserInfo from '../customHooks/useUserInfo';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 function Navbar({ home, profile }) {
   const [loggedAuthInfo, setLoggedAuthInfo] = useState<any>();
   const handleTweetModal = () => {};
   const { authInfo } = useAuth();
+  const history = useHistory();
   useEffect(() => {
     if (authInfo) {
       setLoggedAuthInfo(authInfo.username);
@@ -64,7 +66,9 @@ function Navbar({ home, profile }) {
                   as={Link}
                   alignItems={'center'}
                   pt='8'
-                  href={item.to}
+                  onClick={() => {
+                    history.push(`/${item.to}`);
+                  }}
                   _selected={{ color: 'brand.main', outline: '0px' }}
                   _focus={{ outline: '0px' }}
                   _hover={{ textDecor: 'none' }}>
@@ -101,14 +105,14 @@ function Navbar({ home, profile }) {
         <FaTwitter size={35} color='#35B9F9' />
         {navItems.map((item) => (
           <Flex
-            as={Link}
+            cursor='pointer'
             alignItems={'center'}
             pt='8'
-            _selected={{ color: 'brand.main', outline: '0px' }}
-            _focus={{ outline: '0px' }}
-            _hover={{ textDecor: 'none' }}
-            href={item.to}>
+            onClick={() => {
+              history.push(item.to);
+            }}>
             {item.icon}
+
             <Text
               pl='4'
               fontSize={18}
@@ -124,7 +128,7 @@ function Navbar({ home, profile }) {
         </Box>
         <Flex pos='absolute' bottom='40px' alignItems={'center'}>
           <Avatar mr='4' src={userInfo ? userInfo.profilePic : ''}></Avatar>
-          <Flex flexDir={'column'}>
+          <Flex flexDir={'column'} w='40'>
             <Text fontSize={20} fontWeight={'bold'}>
               {userInfo ? userInfo.name : ''}
             </Text>
@@ -134,7 +138,6 @@ function Navbar({ home, profile }) {
           </Flex>
           <Box
             as={Link}
-            ml='50%'
             zIndex={0}
             _hover={{ bg: 'none' }}
             px='2'
@@ -144,11 +147,12 @@ function Navbar({ home, profile }) {
                 <BiDotsHorizontalRounded size={24} />
               </MenuButton>
               <MenuList bg='brand.bg' zIndex={999}>
-                <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                  New Window
-                </MenuItem>
-                <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                  Open Closed Tab
+                <MenuItem
+                  onClick={() => {
+                    history.push(`/${authInfo.username}`);
+                  }}
+                  _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
+                  Profile
                 </MenuItem>
                 <MenuItem
                   onClick={handleLogout}

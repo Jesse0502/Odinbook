@@ -28,9 +28,6 @@ function App() {
       },
     },
   });
-  useEffect(() => {
-    //check user is logged in
-  }, []);
   return (
     <ChakraProvider theme={theme}>
       <Router>

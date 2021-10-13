@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Image } from '@chakra-ui/image';
-import { Box, Flex, Heading, Link, Text } from '@chakra-ui/layout';
+import { Box, Flex, Grid, Heading, Link, Text } from '@chakra-ui/layout';
 import {
   Button,
   Skeleton,
@@ -18,13 +18,55 @@ import Media from './Media';
 import EditProfileModal from './EditProfileModal';
 import { useHistory } from 'react-router';
 import useAuth from '../customHooks/useAuth';
-
+import useFetch from '../customHooks/useFetch';
+import _ from 'lodash';
+import ShowFollowModal from './ShowFollowModal';
 function User({ profileInfo, loggedIn, sameUser }) {
+  const [url, setUrl] = useState<string>();
+  const [profileTweets, setProfileTweets] = useState<any>();
+  useEffect(() => {
+    setUrl('/tweet');
+  }, []);
+
+  const { fetchData } = useFetch(url, 'GET', '');
   const history = useHistory();
   const handleBackArrow = () => {
     history.push('/');
   };
   const { authInfo } = useAuth();
+
+  const handleFollow = () => {
+    if (authInfo && profileInfo) {
+      fetch(
+        `http://localhost:3001/profile/addfollow/${
+          authInfo && authInfo.id
+        }?_method=PUT`,
+        {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(profileInfo),
+        }
+      ).then((res) => {
+        window.location.reload();
+        return res.json();
+      });
+    }
+  };
+  // authInfo &&
+  //   fetchData &&
+  //   fetchData.tweets.map((tweet) => {
+  //     if (_.find(tweet.likes, { _id: authInfo.id })) {
+  //       console.log(tweet);
+  //     }
+  //   });
+  // _.filter(fetchData && fetchData.tweets.likes, {
+  //   _id: '6165ed90af0e547bde1b345a' ,
+  // })
 
   return (
     <Box bg='#1F2223' color='brand.text'>
@@ -41,9 +83,14 @@ function User({ profileInfo, loggedIn, sameUser }) {
         <Box as={Link} _hover={{ bg: 'whiteAlpha.300' }} p='3'>
           <BsArrowLeft size={20} />
         </Box>
-        <Text pl='3' color='whiteAlpha.700'>
-          123 Tweets
-        </Text>
+        <Flex pl='3' color='whiteAlpha.700'>
+          {profileInfo &&
+            fetchData &&
+            _.filter(fetchData && fetchData.tweets, {
+              username: profileInfo && profileInfo.username,
+            }).length}
+          <Text pl='1'>Tweets</Text>
+        </Flex>
       </Flex>
       <Image
         src={
@@ -65,9 +112,8 @@ function User({ profileInfo, loggedIn, sameUser }) {
                 ? profileInfo.profilePic
                 : ''
             }></Avatar>
-          <Skeleton isLoaded={profileInfo} pt='16'>
-            <Heading>{profileInfo ? profileInfo.name : ''}</Heading>
-          </Skeleton>
+          <Heading pt='16'>{profileInfo ? profileInfo.name : ''}</Heading>
+
           <Text color='whiteAlpha.600' pt='1' fontWeight={'light'}>
             @{authInfo ? authInfo.username : ''}
           </Text>
@@ -96,39 +142,42 @@ function User({ profileInfo, loggedIn, sameUser }) {
               <AiOutlineFieldTime size={20} />
               <Text pl='1' color='whiteAlpha.600' fontWeight={'light'} w='max'>
                 Joined{' '}
-                {authInfo
-                  ? `${new Date(authInfo.createdAt).toLocaleString('default', {
-                      month: 'long',
-                    })} ${new Date(authInfo.createdAt).getFullYear()}`
+                {profileInfo
+                  ? `${new Date(profileInfo.createdAt).toLocaleString(
+                      'default',
+                      {
+                        month: 'long',
+                      }
+                    )} ${new Date(profileInfo.createdAt).getFullYear()}`
                   : ''}
               </Text>
             </Flex>
           </Flex>
           <Flex pt='4'>
-            <Flex alignItems={'center'}>
-              <Skeleton isLoaded={profileInfo}>
-                <Text fontSize={18} pr='2' fontWeight={'bold'}>
-                  {profileInfo ? profileInfo.following.length : ''}
-                </Text>
-              </Skeleton>
+            {/* <Flex alignItems={'center'}>
+              <Text fontSize={18}  fontWeight={'bold'}>
+                {profileInfo ? profileInfo.following.length : ''}
+              </Text>
               <Text as={'span'} color='whiteAlpha.600' fontWeight={'light'}>
                 Following
               </Text>
-            </Flex>
-            <Skeleton isLoaded={profileInfo}>
-              <Flex pl='4' alignItems={'center'}>
-                <Text fontSize={18} pr='2' fontWeight={'bold'}>
-                  {profileInfo ? profileInfo.followers.length : ''}
-                </Text>
-                <Text as={'span'} color='whiteAlpha.600' fontWeight={'light'}>
-                  Following
-                </Text>
-              </Flex>
-            </Skeleton>
+            </Flex> */}
+            <Box pr='2'>
+              <ShowFollowModal
+                follow={profileInfo && profileInfo.following}
+                type={'Following'}
+              />
+            </Box>
+            <Box pl='4'>
+              <ShowFollowModal
+                follow={profileInfo && profileInfo.followers}
+                type={'Followers'}
+              />
+            </Box>
           </Flex>
         </Box>
         {sameUser && <EditProfileModal />}
-        {!sameUser && (
+        {!sameUser && profileInfo && authInfo && (
           <Flex pos='relative'>
             <Button
               top='5'
@@ -136,10 +185,21 @@ function User({ profileInfo, loggedIn, sameUser }) {
               pos='absolute'
               p='5'
               rounded='full'
-              bg='black'
+              onClick={handleFollow}
+              bg={
+                profileInfo &&
+                authInfo &&
+                _.find(profileInfo.followers, { _id: authInfo.id })
+                  ? 'brand.main'
+                  : 'black'
+              }
               _hover={{ bg: 'brand.main' }}
               color='brand.text'>
-              Follow
+              {profileInfo &&
+              authInfo &&
+              _.find(profileInfo.followers, { _id: authInfo.id })
+                ? 'Following'
+                : 'Follow'}
             </Button>
           </Flex>
         )}
@@ -172,17 +232,38 @@ function User({ profileInfo, loggedIn, sameUser }) {
         <TabPanels>
           <TabPanel px='0' pt='2'>
             <Skeleton isLoaded={profileInfo}>
-              {/* <Post />
-              <Post /> */}
+              {profileInfo &&
+                fetchData &&
+                _.filter(fetchData && fetchData.tweets, {
+                  username: profileInfo && profileInfo.username,
+                }).map((item) => <Post tweet={item} />)}
+              <Heading textAlign='center' py='20' color='whiteAlpha.400'>
+                Seems kinda empty from here
+              </Heading>
             </Skeleton>
           </TabPanel>
           <TabPanel px='0' pt='2'>
-            <Skeleton isLoaded={profileInfo}>{/* <Post /> */}</Skeleton>
+            {profileInfo &&
+              fetchData &&
+              fetchData.tweets.map(
+                (tweet) =>
+                  // if (_.find(tweet.likes, { _id: authInfo.id })) {
+                  _.find(tweet.likes, { _id: profileInfo._id }) && (
+                    <Post tweet={tweet} />
+                  )
+
+                // }
+              )}
           </TabPanel>
           <TabPanel px='0' pt='2'>
-            <Skeleton isLoaded={profileInfo}>
-              <Media />
-            </Skeleton>
+            {profileInfo &&
+              fetchData &&
+              _.filter(fetchData && fetchData.tweets, {
+                username: profileInfo && profileInfo.username,
+              }).map((item) => item.tweetImage && <Media tweet={item} />)}
+            <Heading textAlign='center' py='20' color='whiteAlpha.400'>
+              Seems kinda empty from here
+            </Heading>
           </TabPanel>
         </TabPanels>
       </Tabs>

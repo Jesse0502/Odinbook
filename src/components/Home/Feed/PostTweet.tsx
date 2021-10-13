@@ -10,7 +10,10 @@ import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import useFetch from '../../customHooks/useFetch';
 import useAuth from '../../customHooks/useAuth';
 import useUserInfo from '../../customHooks/useUserInfo';
-function PostTweet() {
+import useSound from 'use-sound';
+// import tweetSound from '../../../assets/sounds/tweetSound.mp3';
+function PostTweet({ onClose }) {
+  // const [play] = useSound(tweetSound);
   const [userUrl, setUserUrl] = useState<null | string>(null);
   const { authInfo } = useAuth();
 
@@ -64,11 +67,7 @@ function PostTweet() {
     console.log(tweetBody);
   };
   const { fetchData } = useFetch(url, 'POST', postBody);
-  useEffect(() => {
-    if (fetchData && fetchData.sucess) {
-      window.location.reload();
-    }
-  }, [fetchData]);
+
   return (
     <Box
       py={{ lg: '3', base: '7' }}
@@ -150,7 +149,12 @@ function PostTweet() {
               />
             </Box>
             <Text px='3'>|</Text>
-            <Button colorScheme='twitter' type='submit' rounded='full' w='20'>
+            <Button
+              colorScheme='twitter'
+              type='submit'
+              rounded='full'
+              w='20'
+              onClick={onClose}>
               Tweet
             </Button>
           </Flex>

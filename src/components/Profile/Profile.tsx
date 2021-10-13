@@ -10,11 +10,11 @@ import useUserInfo from '../customHooks/useUserInfo';
 function Profile(props) {
   const [url, setUrl] = useState<string | null>();
   const [loggedInUserInfo, setLoggedInUserInfo] = useState<null | any>(null);
+  const [counter, setCounter] = useState<number>(1);
   const { authInfo } = useAuth();
   useEffect(() => {
     if (authInfo) {
       setUrl('/profile/' + authInfo.username);
-      console.log('running url');
     }
   });
 
@@ -22,9 +22,11 @@ function Profile(props) {
   useEffect(() => {
     if (fetchData) {
       setLoggedInUserInfo(fetchData.user[0]);
-      console.log(fetchData.user[0]);
+      setTimeout(() => {
+        setCounter(counter + 1);
+      }, 1000);
     }
-  }, [fetchData]);
+  }, [fetchData, counter]);
   const profileInfo = props.match.params.user;
   const { userInfo } = useUserInfo(profileInfo);
   return (
@@ -40,8 +42,8 @@ function Profile(props) {
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
           <User
-            profileInfo={userInfo}
-            loggedIn={loggedInUserInfo}
+            profileInfo={userInfo && userInfo}
+            loggedIn={loggedInUserInfo && loggedInUserInfo}
             sameUser={
               userInfo &&
               loggedInUserInfo &&
