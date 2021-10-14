@@ -136,6 +136,19 @@ function LoginModal() {
                     />
                   </InputGroup>
                 </FormControl>
+                <Text
+                  as={Link}
+                  onClick={() => {
+                    handleFormSubmit({
+                      target: [
+                        { value: 'demo@user' },
+                        { value: 'demo@user' },
+                        { value: 'demoUser' },
+                      ],
+                    });
+                  }}>
+                  Login as demo user
+                </Text>
                 <Text color='green.400'>
                   {fetchData ? fetchData.success : ''}
                 </Text>

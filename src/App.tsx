@@ -17,6 +17,7 @@ import useAuth from './components/customHooks/useAuth';
 import { TweetPostContext } from './components/Context/TweetPostContext';
 import Chat from './components/Chat/Chat';
 import Messages from './components/Chat/Messages/Messages';
+import Notifications from './components/Notifications/Notifications';
 function App() {
   const { authInfo } = useAuth();
   const [tweetPost, setTweetPost] = useState(true);
@@ -43,6 +44,10 @@ function App() {
             <Switch>
               <Route path='/home' exact component={Home}></Route>
               <Route path='/chat/' exact component={Chat}></Route>
+              <Route
+                path='/notifications/'
+                exact
+                component={Notifications}></Route>
               <Route path='/chat/:id' exact component={Messages}></Route>
               <Route path='/tweet/:id' exact component={SingleTweet}></Route>
               <Route path='/:user' exact component={Profile}></Route>

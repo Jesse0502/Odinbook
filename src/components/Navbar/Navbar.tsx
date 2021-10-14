@@ -17,6 +17,7 @@ import {
   DrawerCloseButton,
   DrawerBody,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react';
 import NavOpenTweet from './NavOpenTweet';
 import useAuth from '../customHooks/useAuth';
@@ -24,7 +25,8 @@ import useUserInfo from '../customHooks/useUserInfo';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { MdEmail, MdOutlineEmail } from 'react-icons/md';
-function Navbar({ home, profile, messages }) {
+import { AiFillBell, AiOutlineBell } from 'react-icons/ai';
+function Navbar({ home, profile, messages, notifications }) {
   const [loggedAuthInfo, setLoggedAuthInfo] = useState<any>();
   const handleTweetModal = () => {};
   const { authInfo } = useAuth();
@@ -50,6 +52,15 @@ function Navbar({ home, profile, messages }) {
       icon: !profile ? <FiUser size={32} /> : <FaUserAlt size={32} />,
       text: 'Profile',
       to: `/${authInfo ? authInfo.username : ''}`,
+    },
+    {
+      icon: notifications ? (
+        <AiFillBell size={32} />
+      ) : (
+        <AiOutlineBell size={32} />
+      ),
+      text: 'Notifications',
+      to: `/notifications`,
     },
     {
       icon: messages ? <MdEmail size={32} /> : <MdOutlineEmail size={32} />,
@@ -97,6 +108,7 @@ function Navbar({ home, profile, messages }) {
                   </Text>
                 </Flex>
               ))}
+
               <Box onClick={onClose} px='0'>
                 <NavOpenTweet />
               </Box>
@@ -134,6 +146,7 @@ function Navbar({ home, profile, messages }) {
             </Text>
           </Flex>
         ))}
+
         <Box onClick={onClose} px='0'>
           <NavOpenTweet />
         </Box>

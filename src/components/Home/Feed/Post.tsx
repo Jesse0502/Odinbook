@@ -78,8 +78,8 @@ function Post({ tweet }) {
     <Box
       py='3'
       pos='relative'
-      px='5'
-      w='100%'
+      px={{ md: '5', base: '3' }}
+      w={{ md: '100%', base: '96' }}
       borderBottom={'1px'}
       borderColor={'whiteAlpha.200'}>
       <Flex>
@@ -89,7 +89,7 @@ function Post({ tweet }) {
           onClick={() => {
             history.push(`/${userInfo.username}`);
           }}></Avatar>
-        <Flex pl='5' flexDir={'column'}>
+        <Flex pl={{ md: '5', base: '3' }} flexDir={'column'}>
           <Flex>
             <Text pr='1' fontWeight={'semibold'}>
               {userInfo && userInfo.name}
@@ -97,8 +97,13 @@ function Post({ tweet }) {
             <Text pl='1' color='whiteAlpha.600' fontWeight={'light'}>
               @{tweet.username}
             </Text>{' '}
-            <BsDot size={26} color='#606363' />
-            <Text color='whiteAlpha.600' fontWeight={'light'}>
+            <Box display={{ md: 'inline-block', base: 'none' }}>
+              <BsDot size={26} color='#606363' />
+            </Box>
+            <Text
+              color='whiteAlpha.600'
+              fontWeight={'light'}
+              display={{ md: 'inline-block', base: 'none' }}>
               {formatDistanceToNow(new Date(tweet.createdAt), {
                 addSuffix: true,
               })}
@@ -117,7 +122,7 @@ function Post({ tweet }) {
             src={tweet.tweetImage}
             maxH='300px'
             onClick={redirectToSingleTweetPage}
-            w='600px'
+            w={{ md: '600px', base: '72' }}
             objectFit={'cover'}></Image>
         </Flex>
         <Box pos='absolute' right={5}>
@@ -139,10 +144,10 @@ function Post({ tweet }) {
                   onClick={() => {
                     handleTweetDelete(tweet._id);
                     toast({
-                      title: 'Tweet Deleted',
-                      status: 'success',
+                      title: 'Tweet Deleting',
+                      status: 'error',
                       duration: 3000,
-                      isClosable: true,
+                      isClosable: false,
                     });
                   }}
                   _hover={{ bg: 'brand.subText', color: 'brand.text' }}>

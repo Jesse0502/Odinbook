@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Flex, Text } from '@chakra-ui/layout';
-import { Image, Input, Textarea } from '@chakra-ui/react';
+import { Image, Input, Spinner, Textarea, useToast } from '@chakra-ui/react';
 import { BsDot } from 'react-icons/bs';
 import { Button } from '@chakra-ui/react';
 import { BiImageAdd } from 'react-icons/bi';
-import { Upload, message } from 'antd';
+import { Upload, message, Form } from 'antd';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import useFetch from '../../customHooks/useFetch';
 import useAuth from '../../customHooks/useAuth';
@@ -13,6 +13,7 @@ import useUserInfo from '../../customHooks/useUserInfo';
 import useSound from 'use-sound';
 // import tweetSound from '../../../assets/sounds/tweetSound.mp3';
 function PostTweet({ onClose }) {
+  const toast = useToast();
   // const [play] = useSound(tweetSound);
   const [userUrl, setUserUrl] = useState<null | string>(null);
   const { authInfo } = useAuth();
@@ -64,26 +65,37 @@ function PostTweet({ onClose }) {
     };
     setUrl('/tweet');
     setPostBody(tweetBody);
-    console.log(tweetBody);
+    // console.log(tweetBody);
   };
-  const { fetchData } = useFetch(url, 'POST', postBody);
-
+  const { fetchData, fetchIsPending } = useFetch(url, 'POST', postBody);
+  useEffect(() => {
+    if (!fetchIsPending) {
+      const formValue = document.querySelector('.formData');
+      if (formValue) {
+        console.log((formValue[0].value = null));
+        if (loading.imageUrl) {
+          loading.imageUrl = null;
+        }
+      }
+    }
+    // loading.imageUrl = null;
+  }, [fetchData]);
   return (
     <Box
       py={{ lg: '3', base: '7' }}
       pos='relative'
       px='5'
-      w='100%'
+      w={{ md: '100%', base: '96' }}
       minH='max'
       borderBottom={'1px'}
       borderColor={'whiteAlpha.200'}>
-      <form onSubmit={(e) => handleTweetPost(e)}>
+      <form className='formData' onSubmit={(e) => handleTweetPost(e)}>
         <Flex w='max' h='max' overflowWrap={'break-word'}>
           <Avatar src={userInfo && userInfo.profilePic}></Avatar>
           <Flex
             pl='5'
             flexDir={'column'}
-            maxW='600px'
+            maxW={{ lg: '600px', base: '72' }}
             minH='max'
             overflowWrap={'anywhere'}>
             <Flex>
@@ -95,10 +107,11 @@ function PostTweet({ onClose }) {
               </Text>{' '}
             </Flex>
             <Textarea
+              // mt='20'
               border='0'
               resize={'none'}
               minH='30px'
-              w='540px'
+              w={{ lg: '540px', base: '72' }}
               onInput={(e) => handleTextAreaHeight(e)}
               overflowY={'hidden'}
               maxLength={280}
@@ -110,11 +123,11 @@ function PostTweet({ onClose }) {
               _focus={{ outline: '0px' }}
               px={0}></Textarea>
             {loading.imageUrl ? (
-              <Box pos='relative'>
+              <Box pos='relative' w='72'>
                 <Button
                   pos='absolute'
-                  top='-2'
-                  right='-2'
+                  top={{ lg: '-2' }}
+                  right={{ lg: '-2', base: '-2' }}
                   colorScheme={'twitter'}
                   bg='brand.main'
                   onClick={handleRemoveImage}
@@ -126,7 +139,7 @@ function PostTweet({ onClose }) {
                   my='2'
                   rounded='2xl'
                   maxH='300px'
-                  w='full'
+                  w={{ md: 'full', base: '72' }}
                   objectFit={'cover'}></Image>
               </Box>
             ) : (
@@ -155,7 +168,15 @@ function PostTweet({ onClose }) {
               rounded='full'
               isDisabled={!tweetLength}
               w='20'
-              onClick={onClose}>
+              onClick={() => {
+                onClose();
+                toast({
+                  title: 'Tweet Added.',
+                  status: 'info',
+                  duration: 2000,
+                  isClosable: false,
+                });
+              }}>
               Tweet
             </Button>
           </Flex>

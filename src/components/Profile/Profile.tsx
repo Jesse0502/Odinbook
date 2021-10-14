@@ -26,11 +26,10 @@ function Profile(props) {
       setLoggedInUserInfo(fetchData.user[0]);
       setTimeout(() => {
         setCounter(counter + 1);
-      }, 1000);
+      }, 100);
     }
   });
-  const profileInfo = props.match.params.user;
-  const { userInfo } = useUserInfo(profileInfo);
+  const { userInfo } = useUserInfo(props.match.params.user);
   return (
     <>
       <Grid
@@ -40,7 +39,12 @@ function Profile(props) {
         minH='100vh'
         gap='5'>
         <Box pos='relative' w='300px' display={{ md: 'block', base: 'none' }}>
-          <Navbar home={false} profile={true} messages={false} />
+          <Navbar
+            home={false}
+            profile={true}
+            messages={false}
+            notifications={false}
+          />
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
           <User

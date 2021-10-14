@@ -50,7 +50,7 @@ function SingleComment({ comment, tweetId }) {
   return (
     <Box
       py='6'
-      mx='5'
+      mx={{ lg: '5', base: '3' }}
       borderTop='1px'
       borderBottom='1px'
       borderColor='whiteAlpha.200'>
@@ -75,12 +75,17 @@ function SingleComment({ comment, tweetId }) {
                 variant='link'
                 py='0'
                 pr='4'
+                _focus={{ shadow: 'none', outline: 'none' }}
+                outline={'0px'}
                 color='crimson'
                 onClick={handleCommentDelete}>
                 Delete
               </Button>
             )}
-            <Text textAlign={'right'} color='whiteAlpha.400'>
+            <Text
+              textAlign={'right'}
+              color='whiteAlpha.400'
+              display={{ base: 'none', lg: 'block' }}>
               {comment &&
                 comment.createdAt &&
                 formatDistanceToNow(new Date(comment.createdAt), {
@@ -88,7 +93,7 @@ function SingleComment({ comment, tweetId }) {
                 })}
             </Text>
           </Flex>
-          <Text pt='1' w='500px'>
+          <Text pt='1' w={{ lg: '500px', base: '96' }}>
             {comment.tweet}
           </Text>
         </Box>

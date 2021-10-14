@@ -82,13 +82,14 @@ function Post({ tweet }) {
   };
 
   return (
-    <Box>
+    <Box overflow={'hidden'}>
       <Flex
         border='1px'
         borderColor='whiteAlpha.200'
         borderTop={0}
         alignItems={'center'}
         bg='brand.bg'
+        w='96'
         color='brand.text'>
         <Box
           mx='5'
@@ -106,7 +107,7 @@ function Post({ tweet }) {
         pos='relative'
         minH='120vh'
         border='1px'
-        w='100%'
+        w={{ md: '100%', base: '96' }}
         borderTop={0}
         bg='brand.subText'
         color='brand.text'
@@ -151,9 +152,9 @@ function Post({ tweet }) {
                         handleTweetDelete(tweet && tweet._id);
                         toast({
                           title: 'Tweet Deleted',
-                          status: 'success',
+                          status: 'error',
                           duration: 3000,
-                          isClosable: true,
+                          isClosable: false,
                         });
                       }}
                       _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
@@ -178,7 +179,7 @@ function Post({ tweet }) {
             rounded='2xl'
             src={tweet && tweet.tweetImage}
             maxH='300px'
-            w='600px'
+            w={{ lg: '600px', base: '80' }}
             objectFit={'cover'}></Image>
         </Box>
         <Box
@@ -202,7 +203,7 @@ function Post({ tweet }) {
           </Flex>
           <Flex
             alignItems={'center'}
-            pr='12'
+            pr={{ lg: '12', base: '3' }}
             cursor='pointer'
             onClick={() => handleLike(tweet && tweet._id)}>
             {tweet && authInfo && _.find(tweet.likes, { _id: authInfo.id }) ? (
@@ -228,6 +229,7 @@ function Post({ tweet }) {
           </Text>
         </Flex>
         <PostComment tweetId={tweet && tweet._id} />
+
         <Text py='4' mx='5' fontSize='xl'>
           Comments
         </Text>

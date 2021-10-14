@@ -5,6 +5,7 @@ import useFetch from './useFetch';
 function useUserInfo(username) {
   const [userInfo, setLoggedUserInfo] = useState<any>();
   const [url, setUrl] = useState<string | null>();
+  const [counter, setCounter] = useState(0);
   const [fetchData, setFetchData] = useState<any | null>(null);
   useEffect(() => {
     if (username) {
@@ -14,10 +15,13 @@ function useUserInfo(username) {
         })
         .then((result) => {
           setFetchData(result);
+          setTimeout(() => {
+            setCounter(counter + 1);
+          }, 100);
         })
         .catch((err) => {});
     }
-  }, [username]);
+  }, [username, counter]);
   useEffect(() => {
     if (fetchData) {
       setLoggedUserInfo(fetchData.user[0]);

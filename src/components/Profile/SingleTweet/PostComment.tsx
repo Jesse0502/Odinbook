@@ -50,9 +50,13 @@ function Comments({ tweetId }) {
     console.log(tweetBody);
   };
   const clearTextArea = () => {};
-  const { fetchData } = useFetch(url, 'POST', postBody);
+  const { fetchData, fetchIsPending } = useFetch(url, 'POST', postBody);
   useEffect(() => {
-    if (fetchData) {
+    if (!fetchIsPending) {
+      const formData = document.querySelector('.commentFormText')!;
+      if (formData) {
+        console.log((formData[0].innerHTML = null));
+      }
     }
   }, [fetchData]);
   return (
@@ -61,19 +65,19 @@ function Comments({ tweetId }) {
         py={{ lg: '4', base: '7' }}
         pos='relative'
         px='5'
-        w='100%'
+        w={{ lg: '100%', base: '96' }}
         minH='max'
         borderBottom={'1px'}
         bg='brand.subText'
         color='brand.text'
         borderColor={'whiteAlpha.200'}>
-        <form id='commentFormText' onSubmit={(e) => handleTweetPost(e)}>
+        <form className='commentFormText' onSubmit={(e) => handleTweetPost(e)}>
           <Flex w='max' h='max' overflowWrap={'break-word'}>
             <Avatar src={userInfo && userInfo.profilePic}></Avatar>
             <Flex
               pl='5'
               flexDir={'column'}
-              maxW='600px'
+              maxW={{ lg: '600px', base: '96' }}
               minH='max'
               overflowWrap={'anywhere'}>
               <Flex>
@@ -87,12 +91,11 @@ function Comments({ tweetId }) {
               <Textarea
                 border='0'
                 resize={'none'}
-                minH='30px'
-                w='100%'
+                w={{ lg: '100%', base: '64' }}
                 onInput={(e) => handleTextAreaHeight(e)}
                 overflowY={'hidden'}
                 maxLength={280}
-                maxHeight={'300px'}
+                maxH={'300px'}
                 onChange={(e) => handleTweetLength(e)}
                 placeholder='Tweet your reply'
                 fontSize='xl'
@@ -101,7 +104,11 @@ function Comments({ tweetId }) {
                 px={0}></Textarea>
             </Flex>
 
-            <Flex pt='10' pl='16' alignItems={'center'}>
+            <Flex
+              w='96'
+              pt={{ lg: '10', base: '20' }}
+              pl={{ lg: '16' }}
+              alignItems={'center'}>
               <Flex pos='absolute' alignItems={'center'} bottom='3' right={5}>
                 <Box>
                   <CircularProgress

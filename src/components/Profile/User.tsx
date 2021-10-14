@@ -15,6 +15,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  Spinner,
 } from '@chakra-ui/react';
 import { GrLocation } from 'react-icons/gr';
 import { AiOutlineFieldTime } from 'react-icons/ai';
@@ -34,9 +35,11 @@ import Navbar from '../Navbar/Navbar';
 function User({ profileInfo, loggedIn, sameUser }) {
   const [url, setUrl] = useState<string>();
   const [profileTweets, setProfileTweets] = useState<any>();
+  const [handleFollowPending, sethandleFollowPending] =
+    useState<boolean>(false);
   useEffect(() => {
     setUrl('/tweet');
-  }, []);
+  });
 
   const { fetchData } = useFetch(url, 'GET', '');
   const history = useHistory();
@@ -46,6 +49,7 @@ function User({ profileInfo, loggedIn, sameUser }) {
   const { authInfo } = useAuth();
 
   const handleFollow = () => {
+    sethandleFollowPending(true);
     if (authInfo && profileInfo) {
       fetch(
         `http://localhost:3001/profile/addfollow/${
@@ -62,7 +66,8 @@ function User({ profileInfo, loggedIn, sameUser }) {
           body: JSON.stringify(profileInfo),
         }
       ).then((res) => {
-        history.go(0);
+        sethandleFollowPending(false);
+        // history.go(0);
         return res.json();
       });
     }
@@ -76,14 +81,16 @@ function User({ profileInfo, loggedIn, sameUser }) {
         alignItems={'center'}
         py='2'>
         <Flex alignItems={'center'}>
-          <Navbar home={false} profile={true} messages={false} />
+          <Navbar
+            home={false}
+            profile={true}
+            messages={false}
+            notifications={false}
+          />
           <Text pl='1' fontSize={'xl'}>
             Profile
           </Text>
         </Flex>
-        <Text pr='5' fontSize='md' fontWeight={'bold'} color='whiteAlpha.400'>
-          @{profileInfo && profileInfo.username}
-        </Text>
       </Flex>
       <Flex
         alignItems={'center'}
@@ -204,7 +211,12 @@ function User({ profileInfo, loggedIn, sameUser }) {
           )}
         </Box>
         {authInfo && sameUser && <EditProfileModal />}
-        {authInfo && !sameUser && (
+
+        {authInfo &&
+        !sameUser &&
+        profileInfo &&
+        authInfo &&
+        _.find(profileInfo.followers, { _id: authInfo.id }) ? (
           <Flex
             pos='relative'
             onClick={() => {
@@ -214,6 +226,7 @@ function User({ profileInfo, loggedIn, sameUser }) {
               top='5'
               right='-4'
               pos='absolute'
+              display={{ md: 'block', base: 'none' }}
               rounded='full'
               bg={'transparent'}
               border='1px'
@@ -223,14 +236,17 @@ function User({ profileInfo, loggedIn, sameUser }) {
               <AiOutlineMail />
             </Button>
           </Flex>
+        ) : (
+          ''
         )}
-        {!sameUser && (
+        {!sameUser && profileInfo && (
           <Flex pos='relative'>
             <Button
               top='5'
               right='4'
               pos='absolute'
               p='5'
+              minW='28'
               rounded='full'
               onClick={handleFollow}
               bg={
@@ -242,11 +258,17 @@ function User({ profileInfo, loggedIn, sameUser }) {
               }
               _hover={{ bg: 'brand.main' }}
               color='brand.text'>
-              {profileInfo &&
-              authInfo &&
-              _.find(profileInfo.followers, { _id: authInfo.id })
-                ? 'Following'
-                : 'Follow'}
+              {!handleFollowPending ? (
+                profileInfo &&
+                authInfo &&
+                _.find(profileInfo.followers, { _id: authInfo.id }) ? (
+                  'Following'
+                ) : (
+                  'Follow'
+                )
+              ) : (
+                <Spinner />
+              )}
             </Button>
           </Flex>
         )}

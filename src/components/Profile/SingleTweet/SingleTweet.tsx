@@ -34,15 +34,23 @@ function SingleTweet(props) {
   return (
     <>
       <Grid
-        templateColumns={{ md: '3fr 6fr 3fr' }}
+        templateColumns={{ md: '3fr 6fr 3fr', base: '12fr' }}
         px={{ md: '36' }}
         bg='brand.bg'
         minH='100vh'
         gap='5'>
-        <Box pos='relative' w='300px' display={{ md: 'block', base: 'none' }}>
-          <Navbar home={false} profile={true} messages={false} />
+        <Box
+          pos='relative'
+          w={{ lg: '300px' }}
+          display={{ md: 'block', base: 'none' }}>
+          <Navbar
+            home={false}
+            profile={true}
+            messages={false}
+            notifications={false}
+          />
         </Box>
-        <Box w={{ md: '650px', base: '100%' }}>
+        <Box w={{ md: '650px', base: '96' }}>
           <Post tweet={fetchData && fetchData.tweet} />
         </Box>
         <Box w='full' display={{ md: 'block', base: 'none' }}>

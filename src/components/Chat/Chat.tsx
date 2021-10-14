@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Grid, Text } from '@chakra-ui/layout';
+import { Box, Flex, Grid, HStack, Text } from '@chakra-ui/layout';
 import Feeds from '../Home/Feed/Feeds';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
@@ -8,9 +8,16 @@ import useAuth from '../customHooks/useAuth';
 import useUserInfo from '../customHooks/useUserInfo';
 import useFetch from '../customHooks/useFetch';
 import ChatsAvailable from './ChatsAvailable';
+import { Input } from '@chakra-ui/input';
+import { Button } from '@chakra-ui/button';
+import { useHistory } from 'react-router';
 function Chat() {
   const { authInfo } = useAuth();
   const { userInfo } = useUserInfo(authInfo && authInfo.username);
+  const history = useHistory();
+  const handleSearchUser = (e) => {
+    history.push(e.target[0].value);
+  };
   return (
     <>
       <Grid
@@ -21,7 +28,12 @@ function Chat() {
         color='brand.text'
         gap='5'>
         <Box pos='relative' w='300px' display={{ md: 'block', base: 'none' }}>
-          <Navbar home={false} profile={false} messages={true} />
+          <Navbar
+            home={false}
+            profile={false}
+            messages={true}
+            notifications={false}
+          />
         </Box>
         <Box w={{ base: '100%' }} border='1px' borderColor={'whiteAlpha.400'}>
           <Flex
@@ -30,14 +42,47 @@ function Chat() {
             py='3'
             bg='brand.subText'>
             <Flex alignItems={'center'}>
-              <Box display={{ base: 'inherit', md: 'none' }}>
-                <Navbar home={false} profile={false} messages={true} />
+              <Box display={{ base: 'flex', md: 'none' }}>
+                <Navbar
+                  home={false}
+                  profile={false}
+                  messages={true}
+                  notifications={false}
+                />
               </Box>
 
               <Text pl='3' fontSize='2xl'>
                 Following
               </Text>
             </Flex>
+            <HStack
+              display={{ lg: 'flex', base: 'none' }}
+              alignItems={'center'}
+              cursor='pointer'
+              _selected={{ color: 'brand.main', outline: '0px' }}
+              _focus={{ outline: '0px' }}
+              _hover={{ textDecor: 'none' }}>
+              <Text pl='4' fontSize={18} color='whiteAlpha.600'>
+                Search User
+              </Text>
+
+              <form onSubmit={handleSearchUser}>
+                <Box pos='relative'>
+                  <Input rounded={'full'} w='72' placeholder='Enter Username' />
+                  <Button
+                    pos='absolute'
+                    right={0}
+                    w='20'
+                    type='submit'
+                    bg='brand.main'
+                    roundedRight={'full'}
+                    _hover={{ bg: 'brand.main' }}
+                    color='brand.text'>
+                    Search
+                  </Button>
+                </Box>
+              </form>
+            </HStack>
           </Flex>
           {userInfo &&
             userInfo.following.map((follow) => (

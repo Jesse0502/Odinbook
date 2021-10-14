@@ -38,14 +38,14 @@ function Messages(props) {
   return (
     <Grid
       border='1px'
-      templateColumns={{ md: '3fr 9fr', base: '12fr' }}
+      templateColumns={{ md: '12fr', base: '12fr' }}
       bg='#1F2223'
       borderColor={'whiteAlpha.200'}
       pos='relative'
       minH='100vh'>
-      <Center display={{ base: 'none', md: 'inherit' }}>
-        <Navbar home={false} profile={false} messages={true} />
-      </Center>
+      {/* <Center display={{ base: 'none', md: 'inherit' }}> */}
+      {/* <Navbar home={false} profile={false} messages={true} /> */}
+      {/* </Center> */}
       <Box
         // border='1px'
         maxH='100vh'

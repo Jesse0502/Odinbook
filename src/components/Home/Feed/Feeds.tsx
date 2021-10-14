@@ -30,25 +30,31 @@ function Feeds() {
         top='0'
         borderBottom='1px'
         borderColor={'whiteAlpha.300'}
-        minW={{ base: 'full', md: '648px' }}
+        minW={{ base: '96', md: '648px' }}
         zIndex={999}
+        w='96'
         bg='#1F2223'>
         <Flex alignItems={'center'}>
           <Box display={{ lg: 'none', base: 'block' }}>
-            <Navbar home={true} profile={false} messages={false} />
+            <Navbar
+              home={true}
+              profile={false}
+              messages={false}
+              notifications={false}
+            />
           </Box>
           <Text px='3' fontSize={20}>
             Home
           </Text>
         </Flex>
       </Box>
-      <Box pt='16'>
+      <Box pt='16' w='full'>
         <PostTweet onClose={onClose} />
         {fetchData ? (
           fetchData.tweets.map((tweet) => <Post tweet={tweet} />)
         ) : (
           <Center pt='8'>
-            <Spinner color='brand.main' size={'lg'} />
+            <Spinner size='lg' thickness='3px' color='brand.main' />
           </Center>
         )}
       </Box>
