@@ -23,7 +23,8 @@ import useAuth from '../customHooks/useAuth';
 import useUserInfo from '../customHooks/useUserInfo';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-function Navbar({ home, profile }) {
+import { MdEmail, MdOutlineEmail } from 'react-icons/md';
+function Navbar({ home, profile, messages }) {
   const [loggedAuthInfo, setLoggedAuthInfo] = useState<any>();
   const handleTweetModal = () => {};
   const { authInfo } = useAuth();
@@ -46,15 +47,25 @@ function Navbar({ home, profile }) {
       to: '/home',
     },
     {
-      icon: home ? <FiUser size={32} /> : <FaUserAlt size={32} />,
+      icon: !profile ? <FiUser size={32} /> : <FaUserAlt size={32} />,
       text: 'Profile',
       to: `/${authInfo ? authInfo.username : ''}`,
+    },
+    {
+      icon: messages ? <MdEmail size={32} /> : <MdOutlineEmail size={32} />,
+      text: 'Chat',
+      to: `/chat`,
     },
   ];
   return (
     <>
       <Box display={{ base: 'block', lg: 'none' }}>
-        <Avatar onClick={onOpen} size={'md'} ml='3' mr='2'></Avatar>
+        <Avatar
+          onClick={onOpen}
+          size={'md'}
+          ml='3'
+          mr='2'
+          src={userInfo ? userInfo.profilePic : ''}></Avatar>
         <Drawer isOpen={isOpen} placement='left' onClose={onClose}>
           <DrawerOverlay />
           <DrawerContent px='0'>
@@ -63,11 +74,11 @@ function Navbar({ home, profile }) {
             <DrawerBody bg='brand.bg' color='brand.text'>
               {navItems.map((item) => (
                 <Flex
-                  as={Link}
                   alignItems={'center'}
                   pt='8'
+                  cursor='pointer'
                   onClick={() => {
-                    history.push(`/${item.to}`);
+                    history.push(item.to);
                   }}
                   _selected={{ color: 'brand.main', outline: '0px' }}
                   _focus={{ outline: '0px' }}

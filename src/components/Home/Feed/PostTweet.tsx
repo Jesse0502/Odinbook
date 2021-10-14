@@ -19,7 +19,7 @@ function PostTweet({ onClose }) {
 
   const { userInfo } = useUserInfo(authInfo && authInfo.username);
   const handleTweetLength = (e) => {
-    setTweetLength((e.target.value.length / 280) * 100);
+    setTweetLength((e.target.value.trim().length / 280) * 100);
   };
   const handleTextAreaHeight = (e) => {
     e.target.style.height = '5px';
@@ -153,6 +153,7 @@ function PostTweet({ onClose }) {
               colorScheme='twitter'
               type='submit'
               rounded='full'
+              isDisabled={!tweetLength}
               w='20'
               onClick={onClose}>
               Tweet

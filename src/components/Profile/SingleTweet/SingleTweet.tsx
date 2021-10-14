@@ -40,7 +40,7 @@ function SingleTweet(props) {
         minH='100vh'
         gap='5'>
         <Box pos='relative' w='300px' display={{ md: 'block', base: 'none' }}>
-          <Navbar home={false} profile={true} />
+          <Navbar home={false} profile={true} messages={false} />
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
           <Post tweet={fetchData && fetchData.tweet} />

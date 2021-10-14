@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Post from './Post';
-import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Box, Center, Flex, Text } from '@chakra-ui/layout';
 import PostTweet from './PostTweet';
 import { Avatar } from '@chakra-ui/avatar';
 import Navbar from '../../Navbar/Navbar';
 import useFetch from '../../customHooks/useFetch';
+import { CircularProgress, Spinner } from '@chakra-ui/react';
 function Feeds() {
   const [url, setUrl] = useState<string>();
   useEffect(() => {
@@ -34,7 +35,7 @@ function Feeds() {
         bg='#1F2223'>
         <Flex alignItems={'center'}>
           <Box display={{ lg: 'none', base: 'block' }}>
-            <Navbar home={true} profile={false} />
+            <Navbar home={true} profile={false} messages={false} />
           </Box>
           <Text px='3' fontSize={20}>
             Home
@@ -43,9 +44,13 @@ function Feeds() {
       </Box>
       <Box pt='16'>
         <PostTweet onClose={onClose} />
-        {fetchData
-          ? fetchData.tweets.map((tweet) => <Post tweet={tweet} />)
-          : 'loading'}
+        {fetchData ? (
+          fetchData.tweets.map((tweet) => <Post tweet={tweet} />)
+        ) : (
+          <Center pt='8'>
+            <Spinner color='brand.main' size={'lg'} />
+          </Center>
+        )}
       </Box>
     </Box>
   );

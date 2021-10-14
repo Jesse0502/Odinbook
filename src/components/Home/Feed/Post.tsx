@@ -24,11 +24,10 @@ function Post({ tweet }) {
   const history = useHistory();
   const toast = useToast();
   const redirectToSingleTweetPage = () => {
-    window.location.href = '/tweet/' + tweet._id;
+    history.push('/tweet/' + tweet._id);
   };
   const { authInfo } = useAuth();
   const { userInfo } = useUserInfo(tweet.username);
-  // const [url, setUrl] = useState<string | null>(null);
   const [toastValue, setToastValue] = useState<any | null>(null);
   const handleLike = (e) => {
     console.log(e);

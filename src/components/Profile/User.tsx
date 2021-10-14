@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Image } from '@chakra-ui/image';
-import { Box, Flex, Grid, Heading, Link, Text } from '@chakra-ui/layout';
+import {
+  Box,
+  Center,
+  Flex,
+  Grid,
+  Heading,
+  Link,
+  Text,
+} from '@chakra-ui/layout';
 import {
   Button,
   Skeleton,
@@ -20,7 +28,9 @@ import { useHistory } from 'react-router';
 import useAuth from '../customHooks/useAuth';
 import useFetch from '../customHooks/useFetch';
 import _ from 'lodash';
+import { AiOutlineMail } from 'react-icons/ai';
 import ShowFollowModal from './ShowFollowModal';
+import Navbar from '../Navbar/Navbar';
 function User({ profileInfo, loggedIn, sameUser }) {
   const [url, setUrl] = useState<string>();
   const [profileTweets, setProfileTweets] = useState<any>();
@@ -52,27 +62,33 @@ function User({ profileInfo, loggedIn, sameUser }) {
           body: JSON.stringify(profileInfo),
         }
       ).then((res) => {
-        window.location.reload();
+        history.go(0);
         return res.json();
       });
     }
   };
-  // authInfo &&
-  //   fetchData &&
-  //   fetchData.tweets.map((tweet) => {
-  //     if (_.find(tweet.likes, { _id: authInfo.id })) {
-  //       console.log(tweet);
-  //     }
-  //   });
-  // _.filter(fetchData && fetchData.tweets.likes, {
-  //   _id: '6165ed90af0e547bde1b345a' ,
-  // })
 
   return (
     <Box bg='#1F2223' color='brand.text'>
       <Flex
+        justify={'space-between'}
+        display={{ lg: 'none', base: 'flex' }}
+        alignItems={'center'}
+        py='2'>
+        <Flex alignItems={'center'}>
+          <Navbar home={false} profile={true} messages={false} />
+          <Text pl='1' fontSize={'xl'}>
+            Profile
+          </Text>
+        </Flex>
+        <Text pr='5' fontSize='md' fontWeight={'bold'} color='whiteAlpha.400'>
+          @{profileInfo && profileInfo.username}
+        </Text>
+      </Flex>
+      <Flex
         alignItems={'center'}
         h='12'
+        display={{ lg: 'flex', base: 'none' }}
         onClick={handleBackArrow}
         borderBottom='1px'
         borderColor={'whiteAlpha.200'}
@@ -84,11 +100,11 @@ function User({ profileInfo, loggedIn, sameUser }) {
           <BsArrowLeft size={20} />
         </Box>
         <Flex pl='3' color='whiteAlpha.700'>
-          {profileInfo &&
-            fetchData &&
-            _.filter(fetchData && fetchData.tweets, {
-              username: profileInfo && profileInfo.username,
-            }).length}
+          {profileInfo && fetchData
+            ? _.filter(fetchData && fetchData.tweets, {
+                username: profileInfo && profileInfo.username,
+              }).length
+            : 0}
           <Text pl='1'>Tweets</Text>
         </Flex>
       </Flex>
@@ -112,11 +128,22 @@ function User({ profileInfo, loggedIn, sameUser }) {
                 ? profileInfo.profilePic
                 : ''
             }></Avatar>
-          <Heading pt='16'>{profileInfo ? profileInfo.name : ''}</Heading>
-
-          <Text color='whiteAlpha.600' pt='1' fontWeight={'light'}>
-            @{authInfo ? authInfo.username : ''}
-          </Text>
+          <Heading pt='16'>
+            {profileInfo ? (
+              profileInfo.name
+            ) : (
+              <Text textAlign='center' py='5'>
+                This user does not exist!
+              </Text>
+            )}
+          </Heading>
+          {profileInfo && profileInfo.username ? (
+            <Text color='whiteAlpha.600' pt='1' fontWeight={'light'}>
+              @{profileInfo ? profileInfo.username : ''}
+            </Text>
+          ) : (
+            ''
+          )}
           {profileInfo && profileInfo.bio ? (
             <Flex alignItems={'center'} py='3'>
               <Text pl='1' color='brand.text' fontWeight={'light'}>
@@ -138,46 +165,66 @@ function User({ profileInfo, loggedIn, sameUser }) {
             ) : (
               ''
             )}
-            <Flex alignItems={'center'}>
-              <AiOutlineFieldTime size={20} />
-              <Text pl='1' color='whiteAlpha.600' fontWeight={'light'} w='max'>
-                Joined{' '}
-                {profileInfo
-                  ? `${new Date(profileInfo.createdAt).toLocaleString(
-                      'default',
-                      {
-                        month: 'long',
-                      }
-                    )} ${new Date(profileInfo.createdAt).getFullYear()}`
-                  : ''}
-              </Text>
+            {profileInfo ? (
+              <Flex alignItems={'center'}>
+                <AiOutlineFieldTime size={20} />
+                <Text
+                  pl='1'
+                  color='whiteAlpha.600'
+                  fontWeight={'light'}
+                  w='max'>
+                  Joined{' '}
+                  {new Date(profileInfo.createdAt).toLocaleString('default', {
+                    month: 'long',
+                  })}{' '}
+                  {new Date(profileInfo.createdAt).getFullYear()}
+                </Text>
+              </Flex>
+            ) : (
+              ''
+            )}
+          </Flex>
+          {profileInfo && profileInfo.following ? (
+            <Flex pt='4'>
+              <Box pr='2'>
+                <ShowFollowModal
+                  follow={profileInfo && profileInfo.following}
+                  type={'Following'}
+                />
+              </Box>
+              <Box pl='4'>
+                <ShowFollowModal
+                  follow={profileInfo && profileInfo.followers}
+                  type={'Followers'}
+                />
+              </Box>
             </Flex>
-          </Flex>
-          <Flex pt='4'>
-            {/* <Flex alignItems={'center'}>
-              <Text fontSize={18}  fontWeight={'bold'}>
-                {profileInfo ? profileInfo.following.length : ''}
-              </Text>
-              <Text as={'span'} color='whiteAlpha.600' fontWeight={'light'}>
-                Following
-              </Text>
-            </Flex> */}
-            <Box pr='2'>
-              <ShowFollowModal
-                follow={profileInfo && profileInfo.following}
-                type={'Following'}
-              />
-            </Box>
-            <Box pl='4'>
-              <ShowFollowModal
-                follow={profileInfo && profileInfo.followers}
-                type={'Followers'}
-              />
-            </Box>
-          </Flex>
+          ) : (
+            ''
+          )}
         </Box>
-        {sameUser && <EditProfileModal />}
-        {!sameUser && profileInfo && authInfo && (
+        {authInfo && sameUser && <EditProfileModal />}
+        {authInfo && !sameUser && (
+          <Flex
+            pos='relative'
+            onClick={() => {
+              history.push(`chat/${profileInfo._id}`);
+            }}>
+            <Button
+              top='5'
+              right='-4'
+              pos='absolute'
+              rounded='full'
+              bg={'transparent'}
+              border='1px'
+              borderColor={'whiteAlpha.300'}
+              _hover={{ bg: 'black' }}
+              color='brand.text'>
+              <AiOutlineMail />
+            </Button>
+          </Flex>
+        )}
+        {!sameUser && (
           <Flex pos='relative'>
             <Button
               top='5'
@@ -237,9 +284,6 @@ function User({ profileInfo, loggedIn, sameUser }) {
                 _.filter(fetchData && fetchData.tweets, {
                   username: profileInfo && profileInfo.username,
                 }).map((item) => <Post tweet={item} />)}
-              <Heading textAlign='center' py='20' color='whiteAlpha.400'>
-                Seems kinda empty from here
-              </Heading>
             </Skeleton>
           </TabPanel>
           <TabPanel px='0' pt='2'>
@@ -247,12 +291,9 @@ function User({ profileInfo, loggedIn, sameUser }) {
               fetchData &&
               fetchData.tweets.map(
                 (tweet) =>
-                  // if (_.find(tweet.likes, { _id: authInfo.id })) {
                   _.find(tweet.likes, { _id: profileInfo._id }) && (
                     <Post tweet={tweet} />
                   )
-
-                // }
               )}
           </TabPanel>
           <TabPanel px='0' pt='2'>
@@ -261,9 +302,6 @@ function User({ profileInfo, loggedIn, sameUser }) {
               _.filter(fetchData && fetchData.tweets, {
                 username: profileInfo && profileInfo.username,
               }).map((item) => item.tweetImage && <Media tweet={item} />)}
-            <Heading textAlign='center' py='20' color='whiteAlpha.400'>
-              Seems kinda empty from here
-            </Heading>
           </TabPanel>
         </TabPanels>
       </Tabs>

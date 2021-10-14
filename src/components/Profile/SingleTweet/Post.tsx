@@ -22,8 +22,11 @@ import { useHistory } from 'react-router';
 import _ from 'lodash';
 import SingleComment from './SingleComment';
 import PostComment from './PostComment';
+
+import { BsArrowLeft } from 'react-icons/bs';
 function Post({ tweet }) {
   const history = useHistory();
+
   const toast = useToast();
   const redirectToSingleTweetPage = () => {
     window.location.href = '/tweet/' + tweet._id;
@@ -70,6 +73,7 @@ function Post({ tweet }) {
         return res.json();
       })
       .then((result) => {
+        history.push('/');
         setToastValue({ success: result.success });
       })
       .catch((err) => {
@@ -79,35 +83,43 @@ function Post({ tweet }) {
 
   return (
     <Box>
-      <Box
-        py='4'
+      <Flex
         border='1px'
         borderColor='whiteAlpha.200'
         borderTop={0}
+        alignItems={'center'}
         bg='brand.bg'
         color='brand.text'>
-        Tweet
-      </Box>
+        <Box
+          mx='5'
+          py='4'
+          w='max'
+          onClick={() => {
+            history.push('/');
+          }}>
+          <BsArrowLeft size={20} />
+        </Box>
+        <Text>Tweet</Text>
+      </Flex>
       <Box
         py='3'
         pos='relative'
         minH='120vh'
         border='1px'
-        px='5'
         w='100%'
         borderTop={0}
         bg='brand.subText'
         color='brand.text'
         borderBottom={'1px'}
         borderColor={'whiteAlpha.200'}>
-        <Flex>
+        <Flex px='5'>
           <Avatar
             src={userInfo && userInfo.profilePic}
             _hover={{ cursor: 'pointer' }}
             onClick={() => {
               history.push(`/${userInfo && userInfo.username}`);
             }}></Avatar>
-          <Flex pl='5' flexDir={'column'}>
+          <Flex pl='5' flexDir={'column'} px='5'>
             <Flex>
               <Text pr='1' fontWeight={'semibold'}>
                 {userInfo && userInfo.name}
@@ -152,7 +164,7 @@ function Post({ tweet }) {
             </Menu>
           </Box>
         </Flex>
-        <Box pt='5'>
+        <Box pt='5' px='5'>
           <Text
             pr='5'
             onClick={redirectToSingleTweetPage}
@@ -172,14 +184,19 @@ function Post({ tweet }) {
         <Box
           my='4'
           py='4'
+          mx='5'
           borderBottom='1px'
           borderTop={'1px'}
           borderColor='whiteAlpha.400'>
           <Text color='whiteAlpha.600' fontWeight={'light'}>
-            Posted: {tweet && formatDistanceToNow(new Date(tweet.createdAt))}
+            Posted:{' '}
+            {tweet &&
+              formatDistanceToNow(new Date(tweet.createdAt), {
+                addSuffix: true,
+              })}
           </Text>{' '}
         </Box>
-        <Flex justify={'space-around'}>
+        <Flex justify={'space-around'} mx='5'>
           <Flex alignItems={'center'} cursor='pointer' pr='12'>
             <FaRegComment size={26} />
           </Flex>
@@ -196,20 +213,24 @@ function Post({ tweet }) {
           </Flex>
         </Flex>
         <Flex
+          mx='5'
           my='2'
-          py='2'
+          py='4'
           borderTop='1px'
           borderBottom={'1px'}
           borderColor={'whiteAlpha.400'}>
-          <Text pr='3' fontSize={'xl'} color='whiteAlpha.500'>
+          <Text pr='3' fontSize={'lg'} color='whiteAlpha.500'>
             Comments : {tweet && tweet.comments.length}
           </Text>
 
-          <Text pl='2' fontSize={'xl'} color='whiteAlpha.500'>
+          <Text pl='2' fontSize={'lg'} color='whiteAlpha.500'>
             Likes : {tweet && tweet.likes.length}
           </Text>
         </Flex>
         <PostComment tweetId={tweet && tweet._id} />
+        <Text py='4' mx='5' fontSize='xl'>
+          Comments
+        </Text>
         {tweet &&
           tweet.comments.map((comment) => (
             <SingleComment
@@ -218,6 +239,13 @@ function Post({ tweet }) {
               //_.orderBy(tweet.comment, ['createdAt'], ['asc'])
             />
           ))}
+        {tweet && !tweet.comments.length && (
+          <Flex justify={'center'} pt='32'>
+            <Text fontSize={'2xl'} color='whiteAlpha.300'>
+              No Comments to show
+            </Text>
+          </Flex>
+        )}
       </Box>
     </Box>
   );

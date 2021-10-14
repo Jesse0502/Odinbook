@@ -48,7 +48,12 @@ function SingleComment({ comment, tweetId }) {
   };
 
   return (
-    <Box py='4' borderTop='1px' borderBottom='1px' borderColor='whiteAlpha.200'>
+    <Box
+      py='6'
+      mx='5'
+      borderTop='1px'
+      borderBottom='1px'
+      borderColor='whiteAlpha.200'>
       <Flex pos='relative'>
         <Avatar
           cursor='pointer'

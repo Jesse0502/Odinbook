@@ -58,7 +58,8 @@ function LoginModal() {
   useEffect(() => {
     if (fetchData) {
       setSpinner(false);
-      console.log(`user ${fetchData.user}`);
+    }
+    if (fetchData && fetchData.success) {
       localStorage.setItem('token', fetchData.user);
       window.location.href = '/';
     }

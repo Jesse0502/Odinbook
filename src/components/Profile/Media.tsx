@@ -32,7 +32,7 @@ function Media({ tweet }) {
             </Text>{' '}
             <BsDot size={26} color='#606363' />
             <Text color='whiteAlpha.600' fontWeight={'light'}>
-              50s
+              {tweet && new Date(tweet.createdAt).toLocaleDateString()}
             </Text>{' '}
           </Flex>
           <Image
@@ -43,30 +43,6 @@ function Media({ tweet }) {
             w='600px'
             objectFit={'cover'}></Image>
         </Flex>
-        <Box pos='absolute' right={5}>
-          <Menu isLazy autoSelect={false}>
-            <MenuButton>
-              <BiDotsHorizontalRounded size={24} />
-            </MenuButton>
-            <MenuList bg='brand.bg'>
-              <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                New Window
-              </MenuItem>
-              <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                Open Closed Tab
-              </MenuItem>
-              <MenuItem _hover={{ bg: 'brand.subText', color: 'brand.text' }}>
-                Open File
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </Box>
-      </Flex>
-      <Flex pt='4' pl='16'>
-        <Box pr='12'>
-          <FaRegComment size={18} />
-        </Box>
-        <AiOutlineHeart size={20} />
       </Flex>
     </Box>
   );

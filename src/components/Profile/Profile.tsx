@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid } from '@chakra-ui/layout';
+import { Box, Center, Grid, Text } from '@chakra-ui/layout';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
 import User from './User';
@@ -9,7 +9,9 @@ import useUserInfo from '../customHooks/useUserInfo';
 
 function Profile(props) {
   const [url, setUrl] = useState<string | null>();
-  const [loggedInUserInfo, setLoggedInUserInfo] = useState<null | any>(null);
+  const [loggedInUserInfo, setLoggedInUserInfo] = useState<
+    null | any | boolean
+  >(null);
   const [counter, setCounter] = useState<number>(1);
   const { authInfo } = useAuth();
   useEffect(() => {
@@ -26,7 +28,7 @@ function Profile(props) {
         setCounter(counter + 1);
       }, 1000);
     }
-  }, [fetchData, counter]);
+  });
   const profileInfo = props.match.params.user;
   const { userInfo } = useUserInfo(profileInfo);
   return (
@@ -38,7 +40,7 @@ function Profile(props) {
         minH='100vh'
         gap='5'>
         <Box pos='relative' w='300px' display={{ md: 'block', base: 'none' }}>
-          <Navbar home={false} profile={true} />
+          <Navbar home={false} profile={true} messages={false} />
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
           <User

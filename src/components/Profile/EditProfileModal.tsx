@@ -26,6 +26,7 @@ import profileBanner from '../../assets/profileBanner.png';
 import { BiCamera } from 'react-icons/bi';
 import useAuth from '../customHooks/useAuth';
 import useFetch from '../customHooks/useFetch';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 function EditProfileModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<any>(false);
@@ -48,17 +49,7 @@ function EditProfileModal() {
     }
   }, [isOpen]);
 
-  function beforeUpload(file) {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      return setLoading({ error: 'You can only upload JPG/PNG file!' });
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      return setLoading({ error: 'Image must smaller than 2MB!' });
-    }
-    return isJpgOrPng && isLt2M;
-  }
+  function beforeUpload(file) {}
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -162,6 +153,10 @@ function EditProfileModal() {
           <ModalCloseButton />
           <form onSubmit={(e) => handleEditSubmit(e)}>
             <ModalBody pb={6}>
+              <Flex alignItems={'center'}>
+                <AiOutlineExclamationCircle size={'20'} />
+                <Text pl='2'>Image should be less that 10kb in size</Text>
+              </Flex>
               <FormControl mt={4} zIndex={994}>
                 <Box pos='absolute' bottom='-6' right='0'>
                   {loading2.loading ? 'uploading...' : ''}
@@ -182,7 +177,7 @@ function EditProfileModal() {
                   showUploadList={false}
                   action='http://www.mocky.io/v2/5cc8019d300000980a055e76'
                   method='POST'
-                  beforeUpload={beforeUpload2}
+                  // beforeUpload={beforeUpload2}
                   onChange={handleChange2}>
                   {loading2.imageUrl ? (
                     <Center
@@ -230,11 +225,11 @@ function EditProfileModal() {
                       <BiCamera size={30} />
                     </Box>
                     <Upload
-                      name='profileBanner'
-                      listType='picture-card'
+                      // name='profileBanner'
+                      // listType='picture-card'
                       showUploadList={false}
                       action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                      beforeUpload={beforeUpload}
+                      // beforeUpload={beforeUpload}
                       onChange={handleChange}>
                       {loading.imageUrl ? (
                         <Center

@@ -21,6 +21,7 @@ import useAuth from '../../customHooks/useAuth';
 import useFetch from '../../customHooks/useFetch';
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router';
+
 import _ from 'lodash';
 function Comments({ tweetId }) {
   const [tweetLength, setTweetLength] = useState<number>(0);
@@ -57,7 +58,7 @@ function Comments({ tweetId }) {
   return (
     <Box>
       <Box
-        py={{ lg: '3', base: '7' }}
+        py={{ lg: '4', base: '7' }}
         pos='relative'
         px='5'
         w='100%'
