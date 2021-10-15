@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/Odinbook/static/css/main.7f1998ef.chunk.css",
+    "main.js": "/Odinbook/static/js/main.25334b45.chunk.js",
+    "main.js.map": "/Odinbook/static/js/main.25334b45.chunk.js.map",
+    "runtime-main.js": "/Odinbook/static/js/runtime-main.06de2727.js",
+    "runtime-main.js.map": "/Odinbook/static/js/runtime-main.06de2727.js.map",
+    "static/js/2.c1c47375.chunk.js": "/Odinbook/static/js/2.c1c47375.chunk.js",
+    "static/js/2.c1c47375.chunk.js.map": "/Odinbook/static/js/2.c1c47375.chunk.js.map",
+    "index.html": "/Odinbook/index.html",
+    "static/css/main.7f1998ef.chunk.css.map": "/Odinbook/static/css/main.7f1998ef.chunk.css.map",
+    "static/js/2.c1c47375.chunk.js.LICENSE.txt": "/Odinbook/static/js/2.c1c47375.chunk.js.LICENSE.txt",
+    "static/media/signupHero.d5394890.png": "/Odinbook/static/media/signupHero.d5394890.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.06de2727.js",
+    "static/js/2.c1c47375.chunk.js",
+    "static/css/main.7f1998ef.chunk.css",
+    "static/js/main.25334b45.chunk.js"
+  ]
+}
