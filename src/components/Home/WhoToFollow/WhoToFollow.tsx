@@ -13,7 +13,7 @@ function WhoToFollow() {
     setTimeout(() => {
       setCounter(counter + 1);
     }, 500);
-    fetch(`http://localhost:3001/followSuggestions`)
+    fetch(`https://twitter-clone-69.herokuapp.com/followSuggestions`)
       .then((res) => {
         return res.json();
       })

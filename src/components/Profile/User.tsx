@@ -52,7 +52,7 @@ function User({ profileInfo, loggedIn, sameUser }) {
     sethandleFollowPending(true);
     if (authInfo && profileInfo) {
       fetch(
-        `http://localhost:3001/profile/addfollow/${
+        `https://twitter-clone-69.herokuapp.com/profile/addfollow/${
           authInfo && authInfo.id
         }?_method=PUT`,
         {
@@ -211,11 +211,9 @@ function User({ profileInfo, loggedIn, sameUser }) {
           )}
         </Box>
         {authInfo && sameUser && <EditProfileModal />}
-
-        {authInfo &&
-        !sameUser &&
-        profileInfo &&
+        {!sameUser &&
         authInfo &&
+        profileInfo &&
         _.find(profileInfo.followers, { _id: authInfo.id }) ? (
           <Flex
             pos='relative'
@@ -224,7 +222,7 @@ function User({ profileInfo, loggedIn, sameUser }) {
             }}>
             <Button
               top='5'
-              right='-4'
+              right='-5'
               pos='absolute'
               display={{ md: 'block', base: 'none' }}
               rounded='full'

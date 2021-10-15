@@ -21,7 +21,9 @@ function PersonalMessage({ userInfo }) {
   const { authInfo } = useAuth();
   const sendMessage = () => {
     fetch(
-      `http://localhost:3001/chat/${authInfo && authInfo.username}?_method=PUT`,
+      `https://twitter-clone-69.herokuapp.com/chat/${
+        authInfo && authInfo.username
+      }?_method=PUT`,
       {
         method: 'POST',
         mode: 'cors',
@@ -94,13 +96,21 @@ function PersonalMessage({ userInfo }) {
             <Text color='whiteAlpha.600' pl='2'>
               Joined
             </Text>
-            <Text pl='2'>May 2020</Text>
+            <Text pl='2'>
+              {new Date(userInfo && userInfo.createdAt).toLocaleString(
+                'default',
+                {
+                  month: 'long',
+                }
+              )}{' '}
+              {new Date(userInfo && userInfo.createdAt).getFullYear()}
+            </Text>
           </Flex>
         </Center>
       </Box>
       <Center>
-        <Heading color='whiteAlpha.400' pt='40'>
-          Chat feature is currently in works!
+        <Heading color='whiteAlpha.400' pt='40' textAlign={'center'}>
+          Chat feature is currently not available!
         </Heading>
       </Center>
       {/* <Box overflow={'auto'} h='96'>

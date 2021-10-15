@@ -12,7 +12,7 @@ function FollowSuggestion({ users, authInfo }) {
     setfetchDataPending(true);
     if (authInfo && users) {
       fetch(
-        `http://localhost:3001/profile/addfollow/${
+        `https://twitter-clone-69.herokuapp.com/profile/addfollow/${
           authInfo && authInfo.id
         }?_method=PUT`,
         {

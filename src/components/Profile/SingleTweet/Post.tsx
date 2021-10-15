@@ -37,16 +37,19 @@ function Post({ tweet }) {
   const [toastValue, setToastValue] = useState<any | null>(null);
   const handleLike = (e) => {
     console.log(e);
-    fetch(`http://localhost:3001/tweet/like/${e}?_method=PUT`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: authInfo.id }),
-    })
+    fetch(
+      `https://twitter-clone-69.herokuapp.com/tweet/like/${e}?_method=PUT`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: authInfo.id }),
+      }
+    )
       .then((res) => {
         return res.json();
       })
@@ -59,7 +62,7 @@ function Post({ tweet }) {
   };
   // console.log(tweet && authInfo && _.find(tweet.likes, { _id: authInfo.id }));
   const handleTweetDelete = (e) => {
-    fetch(`http://localhost:3001/tweet/delete/${e}`, {
+    fetch(`https://twitter-clone-69.herokuapp.com/tweet/delete/${e}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -84,8 +87,8 @@ function Post({ tweet }) {
   return (
     <Box overflow={'hidden'}>
       <Flex
-        border='1px'
-        borderColor='whiteAlpha.200'
+        // border='1px'
+        // borderColor='whiteAlpha.200'
         borderTop={0}
         alignItems={'center'}
         bg='brand.bg'
@@ -108,7 +111,7 @@ function Post({ tweet }) {
         minH='120vh'
         border='1px'
         w={{ md: '100%', base: '96' }}
-        borderTop={0}
+        borderTop={'1px'}
         bg='brand.subText'
         color='brand.text'
         borderBottom={'1px'}

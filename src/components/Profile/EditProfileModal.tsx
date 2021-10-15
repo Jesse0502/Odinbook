@@ -37,7 +37,9 @@ function EditProfileModal() {
   const [editIsPending, setEditIsPending] = useState<boolean>(false);
   useEffect(() => {
     if (authInfo) {
-      fetch(`http://localhost:3001/profile/${authInfo.username}`)
+      fetch(
+        `https://twitter-clone-69.herokuapp.com/profile/${authInfo.username}`
+      )
         .then((res) => {
           return res.json();
         })

@@ -9,7 +9,7 @@ function useUserInfo(username) {
   const [fetchData, setFetchData] = useState<any | null>(null);
   useEffect(() => {
     if (username) {
-      fetch(`http://localhost:3001/profile/${username}`)
+      fetch(`https://twitter-clone-69.herokuapp.com/profile/${username}`)
         .then((res) => {
           return res.json();
         })

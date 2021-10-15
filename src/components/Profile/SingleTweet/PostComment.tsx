@@ -29,7 +29,7 @@ function Comments({ tweetId }) {
   const [url, setUrl] = useState<string | null>(null);
   const [postBody, setPostBody] = useState<any>();
   const handleTweetLength = (e) => {
-    setTweetLength((e.target.value.length / 280) * 100);
+    setTweetLength((e.target.value.trim().length / 280) * 100);
   };
   const handleTextAreaHeight = (e) => {
     e.target.style.height = '5px';
@@ -122,6 +122,7 @@ function Comments({ tweetId }) {
                 <Button
                   colorScheme='twitter'
                   type='submit'
+                  isDisabled={!tweetLength}
                   rounded='full'
                   w='20'>
                   Tweet

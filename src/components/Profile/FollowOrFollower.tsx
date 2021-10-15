@@ -34,7 +34,7 @@ function FollowOrFollower({ info, onClose }) {
   const handleFollow = () => {
     if (authInfo && fetchData.user[0]) {
       fetch(
-        `http://localhost:3001/profile/addfollow/${
+        `https://twitter-clone-69.herokuapp.com/profile/addfollow/${
           authInfo && authInfo.id
         }?_method=PUT`,
         {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Grid, HStack, Text } from '@chakra-ui/layout';
+import { Box, Center, Flex, Grid, HStack, Text } from '@chakra-ui/layout';
 import Feeds from '../Home/Feed/Feeds';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
@@ -11,6 +11,7 @@ import ChatsAvailable from './ChatsAvailable';
 import { Input } from '@chakra-ui/input';
 import { Button } from '@chakra-ui/button';
 import { useHistory } from 'react-router';
+import { Spinner } from '@chakra-ui/spinner';
 function Chat() {
   const { authInfo } = useAuth();
   const { userInfo } = useUserInfo(authInfo && authInfo.username);
@@ -67,7 +68,7 @@ function Chat() {
               </Text>
 
               <form onSubmit={handleSearchUser}>
-                <Box pos='relative'>
+                <Box pos='relative' mr='4'>
                   <Input rounded={'full'} w='72' placeholder='Enter Username' />
                   <Button
                     pos='absolute'
@@ -77,6 +78,7 @@ function Chat() {
                     bg='brand.main'
                     roundedRight={'full'}
                     _hover={{ bg: 'brand.main' }}
+                    _active={{ bg: 'brand.main' }}
                     color='brand.text'>
                     Search
                   </Button>
@@ -84,10 +86,15 @@ function Chat() {
               </form>
             </HStack>
           </Flex>
-          {userInfo &&
+          {userInfo ? (
             userInfo.following.map((follow) => (
               <ChatsAvailable follow={follow} />
-            ))}
+            ))
+          ) : (
+            <Center pt='3'>
+              <Spinner size='lg' color='brand.main' thickness='3px' />
+            </Center>
+          )}
           {/* <Messages /> */}
         </Box>
       </Grid>

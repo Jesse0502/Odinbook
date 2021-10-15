@@ -22,7 +22,9 @@ function Messages(props) {
   const [userInfo, setUserInfo] = useState();
   const { authInfo } = useAuth();
   useEffect(() => {
-    fetch(`http://localhost:3001/follower/profile/${props.match.params.id}`)
+    fetch(
+      `https://twitter-clone-69.herokuapp.com/follower/profile/${props.match.params.id}`
+    )
       .then((res) => {
         return res.json();
       })

@@ -31,16 +31,19 @@ function Post({ tweet }) {
   const [toastValue, setToastValue] = useState<any | null>(null);
   const handleLike = (e) => {
     console.log(e);
-    fetch(`http://localhost:3001/tweet/like/${e}?_method=PUT`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: authInfo.id }),
-    })
+    fetch(
+      `https://twitter-clone-69.herokuapp.com/tweet/like/${e}?_method=PUT`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: authInfo.id }),
+      }
+    )
       .then((res) => {
         return res.json();
       })
@@ -53,7 +56,7 @@ function Post({ tweet }) {
   };
   // console.log(tweet && authInfo && _.find(tweet.likes, { _id: authInfo.id }));
   const handleTweetDelete = (e) => {
-    fetch(`http://localhost:3001/tweet/delete/${e}`, {
+    fetch(`https://twitter-clone-69.herokuapp.com/tweet/delete/${e}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -120,7 +123,7 @@ function Post({ tweet }) {
             mt='2'
             rounded='2xl'
             src={tweet.tweetImage}
-            maxH='300px'
+            maxH={{ md: '300px', base: '170px' }}
             onClick={redirectToSingleTweetPage}
             w={{ md: '600px', base: '72' }}
             objectFit={'cover'}></Image>
@@ -169,7 +172,7 @@ function Post({ tweet }) {
         </Flex>
         <Flex
           alignItems={'center'}
-          pr='12'
+          pr={{ md: '12', base: '40' }}
           cursor='pointer'
           onClick={() => {
             handleLike(tweet && tweet._id);

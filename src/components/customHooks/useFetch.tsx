@@ -11,7 +11,7 @@ function useFetch(url, type, postBody) {
 
     function getData() {
       if (type === 'GET' && !done) {
-        fetch(`http://localhost:3001${url}`)
+        fetch(`https://twitter-clone-69.herokuapp.com${url}`)
           .then((res) => {
             setFetchIsPending(false);
             return res.json();
@@ -29,7 +29,7 @@ function useFetch(url, type, postBody) {
           });
       }
       if (type === 'POST' && postBody && !done) {
-        fetch(`http://localhost:3001${url}`, {
+        fetch(`https://twitter-clone-69.herokuapp.com${url}`, {
           method: 'POST',
           mode: 'cors',
           cache: 'no-cache',

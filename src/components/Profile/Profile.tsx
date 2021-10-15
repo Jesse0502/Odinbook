@@ -6,6 +6,7 @@ import User from './User';
 import useAuth from '../customHooks/useAuth';
 import useFetch from '../customHooks/useFetch';
 import useUserInfo from '../customHooks/useUserInfo';
+import { Spinner } from '@chakra-ui/spinner';
 
 function Profile(props) {
   const [url, setUrl] = useState<string | null>();
@@ -47,15 +48,21 @@ function Profile(props) {
           />
         </Box>
         <Box w={{ md: '650px', base: '100%' }}>
-          <User
-            profileInfo={userInfo && userInfo}
-            loggedIn={loggedInUserInfo && loggedInUserInfo}
-            sameUser={
-              userInfo &&
-              loggedInUserInfo &&
-              userInfo.username === loggedInUserInfo.username
-            }
-          />
+          {(userInfo && loggedInUserInfo) || userInfo === undefined ? (
+            <User
+              profileInfo={userInfo && userInfo}
+              loggedIn={loggedInUserInfo && loggedInUserInfo}
+              sameUser={
+                userInfo &&
+                loggedInUserInfo &&
+                userInfo.username === loggedInUserInfo.username
+              }
+            />
+          ) : (
+            <Center pt='4'>
+              <Spinner size='lg' thickness='3px' color='brand.main' />
+            </Center>
+          )}
         </Box>
         <Box w='full' display={{ md: 'block', base: 'none' }}>
           <WhoToFollow />

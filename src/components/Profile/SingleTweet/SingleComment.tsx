@@ -24,7 +24,7 @@ function SingleComment({ comment, tweetId }) {
   const handleCommentDelete = () => {
     if (tweetId && comment) {
       fetch(
-        `http://localhost:3001/tweet/comment/${
+        `https://twitter-clone-69.herokuapp.com/tweet/comment/${
           tweetId && tweetId
         }?_method=DELETE`,
         {

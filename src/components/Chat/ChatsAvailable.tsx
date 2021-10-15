@@ -20,7 +20,11 @@ function ChatsAvailable({ follow }) {
   const [userInfo, setUserInfo] = useState<any>();
   //   const { authInfo } = useAuth();
   useEffect(() => {
-    fetch(`http://localhost:3001/follower/profile/${follow && follow._id}`)
+    fetch(
+      `https://twitter-clone-69.herokuapp.com/follower/profile/${
+        follow && follow._id
+      }`
+    )
       .then((res) => {
         return res.json();
       })
