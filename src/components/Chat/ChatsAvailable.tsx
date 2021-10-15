@@ -1,19 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text, Flex, Center } from '@chakra-ui/layout';
+import { Box, Text, Flex } from '@chakra-ui/layout';
 import { Avatar } from '@chakra-ui/react';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-} from '@chakra-ui/react';
-import { BsThreeDots } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 function ChatsAvailable({ follow }) {
   const [counter, setCounter] = useState<number>(1);

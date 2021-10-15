@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Image, Skeleton, Textarea } from '@chakra-ui/react';
+import { Avatar, Button, Image, Textarea } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import {
   Modal,
@@ -10,19 +10,10 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Link,
-  List,
-  Text,
-} from '@chakra-ui/layout';
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
+import { Box, Center, Flex, Link, Text } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
 import { FormControl, FormLabel } from '@chakra-ui/react';
 import { Upload, message } from 'antd';
-import profileBanner from '../../assets/profileBanner.png';
 import { BiCamera } from 'react-icons/bi';
 import useAuth from '../customHooks/useAuth';
 import useFetch from '../customHooks/useFetch';

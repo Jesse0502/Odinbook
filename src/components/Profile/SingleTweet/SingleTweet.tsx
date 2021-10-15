@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@chakra-ui/layout';
 import Navbar from '../../Navbar/Navbar';
 import WhoToFollow from '../../Home/WhoToFollow/WhoToFollow';
-import User from '../User';
 import useAuth from '../../customHooks/useAuth';
 import useFetch from '../../customHooks/useFetch';
 import useUserInfo from '../../customHooks/useUserInfo';
@@ -10,7 +9,6 @@ import Post from './Post';
 
 function SingleTweet(props) {
   const [url, setUrl] = useState<string | null>();
-  const [loggedInUserInfo, setLoggedInUserInfo] = useState<null | any>(null);
   const [counter, setCounter] = useState<number>(1);
   const { authInfo } = useAuth();
   useEffect(() => {

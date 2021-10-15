@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Center, Flex, Grid, HStack, Text } from '@chakra-ui/layout';
-import Feeds from '../Home/Feed/Feeds';
 import Navbar from '../Navbar/Navbar';
-import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
-import Messages from './Messages/Messages';
 import useAuth from '../customHooks/useAuth';
 import useUserInfo from '../customHooks/useUserInfo';
-import useFetch from '../customHooks/useFetch';
 import ChatsAvailable from './ChatsAvailable';
 import { Input } from '@chakra-ui/input';
 import { Button } from '@chakra-ui/button';

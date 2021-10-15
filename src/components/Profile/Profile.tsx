@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Center, Grid, Text } from '@chakra-ui/layout';
+import { Box, Center, Grid } from '@chakra-ui/layout';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
 import User from './User';

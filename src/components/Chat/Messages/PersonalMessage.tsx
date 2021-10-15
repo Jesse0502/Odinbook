@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Text, Flex, Center, Heading } from '@chakra-ui/layout';
 import { BsCalendar3 } from 'react-icons/bs';
-import { BiSend } from 'react-icons/bi';
-import { Input } from '@chakra-ui/input';
 import { Avatar } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/button';
 import { BsArrowLeft } from 'react-icons/bs';
-import useFetch from '../../customHooks/useFetch';
 import { useHistory } from 'react-router';
 import useAuth from '../../customHooks/useAuth';
-import SingleMsgfrom from './SingleMsgfrom';
-import SingleMsgto from './SingleMsgto';
-import Navbar from '../../Navbar/Navbar';
 function PersonalMessage({ userInfo }) {
   const history = useHistory();
   const [messageInputSend, setMessageInputSend] = useState<null | string>();

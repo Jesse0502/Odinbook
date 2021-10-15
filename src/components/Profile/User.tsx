@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Image } from '@chakra-ui/image';
-import {
-  Box,
-  Center,
-  Flex,
-  Grid,
-  Heading,
-  Link,
-  Text,
-} from '@chakra-ui/layout';
-import {
-  Button,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Spinner,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Link, Text } from '@chakra-ui/layout';
+import { Button, Skeleton, Spinner } from '@chakra-ui/react';
 import { GrLocation } from 'react-icons/gr';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import ProfileBanner from '../../assets/profileBanner.png';
@@ -34,7 +20,6 @@ import ShowFollowModal from './ShowFollowModal';
 import Navbar from '../Navbar/Navbar';
 function User({ profileInfo, loggedIn, sameUser }) {
   const [url, setUrl] = useState<string>();
-  const [profileTweets, setProfileTweets] = useState<any>();
   const [handleFollowPending, sethandleFollowPending] =
     useState<boolean>(false);
   useEffect(() => {

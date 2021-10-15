@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Flex, Text } from '@chakra-ui/layout';
-import { Image, Input, Spinner, Textarea, useToast } from '@chakra-ui/react';
-import { BsDot } from 'react-icons/bs';
+import { Image, Textarea, useToast } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { BiImageAdd } from 'react-icons/bi';
-import { Upload, message, Form } from 'antd';
+import { Upload } from 'antd';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import useFetch from '../../customHooks/useFetch';
 import useAuth from '../../customHooks/useAuth';
 import useUserInfo from '../../customHooks/useUserInfo';
-import useSound from 'use-sound';
 // import tweetSound from '../../../assets/sounds/tweetSound.mp3';
 function PostTweet({ onClose }) {
   const toast = useToast();

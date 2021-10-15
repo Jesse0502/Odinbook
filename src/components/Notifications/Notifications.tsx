@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Center, Flex, Grid, Text } from '@chakra-ui/layout';
 import Navbar from '../Navbar/Navbar';
 import WhoToFollow from '../Home/WhoToFollow/WhoToFollow';
-// import User from './User';
 import useAuth from '../customHooks/useAuth';
-import useFetch from '../customHooks/useFetch';
 import useUserInfo from '../customHooks/useUserInfo';
 import Notification from './Notification';
 import { BsArrowLeft } from 'react-icons/bs';

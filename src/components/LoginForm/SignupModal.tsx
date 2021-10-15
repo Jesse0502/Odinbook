@@ -10,18 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  List,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/layout';
+import { Box, Center, Heading, Link, Stack, Text } from '@chakra-ui/layout';
 import { FaTwitter } from 'react-icons/fa';
 import {
   Input,
@@ -29,7 +18,7 @@ import {
   InputLeftAddon,
   InputRightElement,
 } from '@chakra-ui/input';
-import { CircularProgress, Tooltip } from '@chakra-ui/react';
+import { CircularProgress } from '@chakra-ui/react';
 import useFetch from '../customHooks/useFetch';
 
 function SignupModal() {

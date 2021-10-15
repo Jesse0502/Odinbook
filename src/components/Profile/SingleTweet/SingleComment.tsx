@@ -1,18 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
-import { Box, Flex, Link, Text } from '@chakra-ui/layout';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Image,
-  Button,
-} from '@chakra-ui/react';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { BsDot } from 'react-icons/bs';
-import { FaRegComment } from 'react-icons/fa';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useUserInfo from '../../customHooks/useUserInfo';
 import { useHistory } from 'react-router';

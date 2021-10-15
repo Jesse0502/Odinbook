@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Flex, Text } from '@chakra-ui/layout';
 import { Avatar } from '@chakra-ui/avatar';
 import { Button } from '@chakra-ui/button';
 import * as _ from 'lodash';

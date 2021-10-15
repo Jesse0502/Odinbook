@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Grid, Text, Flex } from '@chakra-ui/layout';
+import { Text, Flex } from '@chakra-ui/layout';
 import useUserInfo from '../customHooks/useUserInfo';
 import { Avatar } from '@chakra-ui/avatar';
 import { BsDot } from 'react-icons/bs';

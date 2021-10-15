@@ -1,13 +1,8 @@
 import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
-import { Box, Center, Flex, Text } from '@chakra-ui/layout';
-import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { Box, Flex, Text } from '@chakra-ui/layout';
 import { BsDot } from 'react-icons/bs';
-import { FaRegComment } from 'react-icons/fa';
-import { AiOutlineHeart } from 'react-icons/ai';
 import { Image } from '@chakra-ui/react';
-import signupHero from '../../assets/signupHero.png';
 import useUserInfo from '../customHooks/useUserInfo';
 function Media({ tweet }) {
   const { userInfo } = useUserInfo(tweet.username);

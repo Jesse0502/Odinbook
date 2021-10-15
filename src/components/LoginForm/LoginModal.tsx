@@ -10,24 +10,15 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/modal';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Link,
-  List,
-  Text,
-} from '@chakra-ui/layout';
+import { Box, Center, Heading, Link, Text } from '@chakra-ui/layout';
 import { FaTwitter } from 'react-icons/fa';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
-import { FormControl, FormLabel, Tooltip } from '@chakra-ui/react';
+import { FormControl, FormLabel } from '@chakra-ui/react';
 import { CircularProgress } from '@chakra-ui/react';
 import useFetch from '../customHooks/useFetch';
 function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showPass, setShowPass] = useState<Boolean>(false);
-  const [formResult, setFormResult] = useState();
   const [url, setUrl] = useState<string>();
   const [postBody, setPostBody] = useState<any>();
   const [spinner, setSpinner] = useState<boolean>(false);

@@ -1,27 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Grid, Heading, Link, Text } from '@chakra-ui/layout';
+import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import { Avatar } from '@chakra-ui/avatar';
-import { Image } from '@chakra-ui/image';
 import useFetch from '../customHooks/useFetch';
-import {
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Button,
-} from '@chakra-ui/react';
+import { SkeletonText, Button } from '@chakra-ui/react';
 import { useHistory } from 'react-router';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-} from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import useAuth from '../customHooks/useAuth';
 function FollowOrFollower({ info, onClose }) {
   const [url, setUrl] = useState<any>(null);

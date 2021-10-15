@@ -1,26 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from '@chakra-ui/avatar';
-import { Box, Flex, Link, Text } from '@chakra-ui/layout';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Image,
-  Button,
-  Textarea,
-  CircularProgress,
-} from '@chakra-ui/react';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { BsDot } from 'react-icons/bs';
-import { FaRegComment } from 'react-icons/fa';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { Box, Flex, Text } from '@chakra-ui/layout';
+import { Button, Textarea, CircularProgress } from '@chakra-ui/react';
 import useUserInfo from '../../customHooks/useUserInfo';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useAuth from '../../customHooks/useAuth';
 import useFetch from '../../customHooks/useFetch';
-import { useToast } from '@chakra-ui/react';
-import { useHistory } from 'react-router';
 
 import _ from 'lodash';
 function Comments({ tweetId }) {

@@ -1,18 +1,6 @@
-import {
-  Input,
-  Box,
-  Flex,
-  Avatar,
-  Text,
-  Grid,
-  useDisclosure,
-  Button,
-  Center,
-} from '@chakra-ui/react';
+import { Box, Grid, useDisclosure } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useAuth from '../../customHooks/useAuth';
-import useFetch from '../../customHooks/useFetch';
-import Navbar from '../../Navbar/Navbar';
 import PersonalMessage from './PersonalMessage';
 function Messages(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();

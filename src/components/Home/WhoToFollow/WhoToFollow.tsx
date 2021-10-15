@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Center, Text } from '@chakra-ui/layout';
 import FollowSuggestion from './FollowSuggestion';
-import useFetch from '../../customHooks/useFetch';
 import useAuth from '../../customHooks/useAuth';
 import { Spinner } from '@chakra-ui/spinner';
 function WhoToFollow() {
-  const [url, setUrl] = useState<string | null>();
   const [counter, setCounter] = useState<number>(0);
   const { authInfo } = useAuth();
   const [fetchData, setFetchData] = useState<any>();
