@@ -108,9 +108,9 @@ function EditProfileModal() {
       bio: e.target[3].value,
       location: e.target[4].value,
     };
+    console.log(body)
     setUrl('/profile/' + authInfo.username + '?_method=PUT');
     setPostBody(body);
-    console.log(body);
   };
   const { fetchData, fetchError, fetchIsPending } = useFetch(
     url,
@@ -120,7 +120,7 @@ function EditProfileModal() {
   useEffect(() => {
     if (fetchData) {
       setEditIsPending(false);
-      window.location.reload();
+      onClose()
     }
   });
   return (

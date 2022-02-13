@@ -43,7 +43,7 @@ function App() {
           ) : (
             <Switch>
               <Route path='/home' exact component={Home}></Route>
-              <Route path='/chat/' exact component={Chat}></Route>
+              <Route path='/search/' exact component={Chat}></Route>
               <Route
                 path='/notifications/'
                 exact

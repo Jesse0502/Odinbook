@@ -196,32 +196,7 @@ function User({ profileInfo, loggedIn, sameUser }) {
           )}
         </Box>
         {authInfo && sameUser && <EditProfileModal />}
-        {!sameUser &&
-        authInfo &&
-        profileInfo &&
-        _.find(profileInfo.followers, { _id: authInfo.id }) ? (
-          <Flex
-            pos='relative'
-            onClick={() => {
-              history.push(`chat/${profileInfo._id}`);
-            }}>
-            <Button
-              top='5'
-              right='-5'
-              pos='absolute'
-              display={{ md: 'block', base: 'none' }}
-              rounded='full'
-              bg={'transparent'}
-              border='1px'
-              borderColor={'whiteAlpha.300'}
-              _hover={{ bg: 'black' }}
-              color='brand.text'>
-              <AiOutlineMail />
-            </Button>
-          </Flex>
-        ) : (
-          ''
-        )}
+        
         {!sameUser && profileInfo && (
           <Flex pos='relative'>
             <Button

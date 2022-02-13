@@ -28,7 +28,7 @@ function ChatsAvailable({ follow }) {
   return (
     <Flex
       onClick={() => {
-        history.push(`/chat/${userInfo._id}`);
+        history.push(`/${userInfo.username}`);
       }}
       _hover={{ bg: '#212A2A', cursor: 'pointer' }}
       py='5'

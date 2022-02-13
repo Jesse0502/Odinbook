@@ -1,5 +1,5 @@
 import { Box, Flex, Link, Text } from '@chakra-ui/layout';
-import { FaTwitter, FaUserAlt } from 'react-icons/fa';
+import { FaTwitter, FaUserAlt, FaSearch } from 'react-icons/fa';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { AiOutlineHome } from 'react-icons/ai';
 
@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { MdEmail, MdOutlineEmail } from 'react-icons/md';
 import { AiFillBell, AiOutlineBell } from 'react-icons/ai';
+import {BsSearch} from 'react-icons/bs';
 function Navbar({ home, profile, messages, notifications }) {
   const [loggedAuthInfo, setLoggedAuthInfo] = useState<any>();
   const handleTweetModal = () => {};
@@ -49,6 +50,11 @@ function Navbar({ home, profile, messages, notifications }) {
       to: '/home',
     },
     {
+      icon: messages ? <FaSearch size={32} /> : <BsSearch size={32} />,
+      text: 'Search',
+      to: `/search`,
+    },
+    {
       icon: !profile ? <FiUser size={32} /> : <FaUserAlt size={32} />,
       text: 'Profile',
       to: `/${authInfo ? authInfo.username : ''}`,
@@ -62,11 +68,7 @@ function Navbar({ home, profile, messages, notifications }) {
       text: 'Notifications',
       to: `/notifications`,
     },
-    {
-      icon: messages ? <MdEmail size={32} /> : <MdOutlineEmail size={32} />,
-      text: 'Chat',
-      to: `/chat`,
-    },
+  
   ];
   return (
     <>

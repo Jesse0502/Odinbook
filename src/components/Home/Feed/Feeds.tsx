@@ -11,9 +11,7 @@ function Feeds() {
   useEffect(() => {
     setUrl('/tweet');
   }, []);
-  const onClose = () => {
-    console.log('closed');
-  };
+
   const { fetchData } = useFetch(url, 'GET', '');
   return (
     <Box
@@ -49,7 +47,7 @@ function Feeds() {
         </Flex>
       </Box>
       <Box pt='16' w='full'>
-        <PostTweet onClose={onClose} />
+        <PostTweet onClose={() => console.log("closed")} />
         {fetchData ? (
           fetchData.tweets.map((tweet) => <Post tweet={tweet} />)
         ) : (

@@ -13,7 +13,7 @@ function Chat() {
   const { userInfo } = useUserInfo(authInfo && authInfo.username);
   const history = useHistory();
   const handleSearchUser = (e) => {
-    history.push(e.target[0].value);
+    history.push(e.target[0].value.trim());
   };
   return (
     <>
@@ -47,9 +47,8 @@ function Chat() {
                   notifications={false}
                 />
               </Box>
-
-              <Text pl='3' fontSize='2xl'>
-                Following
+              <Text pl='4' fontSize={18} color='whiteAlpha.600'>
+                Search User
               </Text>
             </Flex>
             <HStack
@@ -59,9 +58,7 @@ function Chat() {
               _selected={{ color: 'brand.main', outline: '0px' }}
               _focus={{ outline: '0px' }}
               _hover={{ textDecor: 'none' }}>
-              <Text pl='4' fontSize={18} color='whiteAlpha.600'>
-                Search User
-              </Text>
+             
 
               <form onSubmit={handleSearchUser}>
                 <Box pos='relative' mr='4'>
@@ -91,7 +88,6 @@ function Chat() {
               <Spinner size='lg' color='brand.main' thickness='3px' />
             </Center>
           )}
-          {/* <Messages /> */}
         </Box>
       </Grid>
     </>

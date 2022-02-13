@@ -10,7 +10,7 @@ function WhoToFollow() {
   useEffect(() => {
     setTimeout(() => {
       setCounter(counter + 1);
-    }, 500);
+    }, 1000);
     fetch(`https://twitter-clone-69.herokuapp.com/followSuggestions`)
       .then((res) => {
         return res.json();

@@ -16,7 +16,6 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import useUserInfo from '../../customHooks/useUserInfo';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useAuth from '../../customHooks/useAuth';
-import useFetch from '../../customHooks/useFetch';
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router';
 import _ from 'lodash';
@@ -29,8 +28,9 @@ function Post({ tweet }) {
   const { authInfo } = useAuth();
   const { userInfo } = useUserInfo(tweet.username);
   const [toastValue, setToastValue] = useState<any | null>(null);
+  const [fakeLike, setFakeLike] = useState<boolean>(false)
+
   const handleLike = (e) => {
-    console.log(e);
     fetch(
       `https://twitter-clone-69.herokuapp.com/tweet/like/${e}?_method=PUT`,
       {
@@ -147,7 +147,7 @@ function Post({ tweet }) {
                   onClick={() => {
                     handleTweetDelete(tweet._id);
                     toast({
-                      title: 'Tweet Deleting',
+                      title: 'Tweet Deleted',
                       status: 'error',
                       duration: 3000,
                       isClosable: false,
