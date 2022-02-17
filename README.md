@@ -1,3 +1,3 @@
 # Odinbook
 
-This project is live here - https://csb-sq5i0.netlify.app/
+This project is live here - https://csb-to4nvm.netlify.app/
